@@ -1,5 +1,5 @@
-const express = require('express')
-const dotenv = require('dotenv')
+import express, { Request, Response } from 'express'
+import dotenv from 'dotenv'
 
 
 // configs
@@ -9,7 +9,7 @@ const port = process.env.PORT
 
 
 // paths
-app.get('/', (req, res) => {
+app.get('/', (_: Request, res: Response) => {
     res.send('Hello World!')
 })
 
