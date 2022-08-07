@@ -7,10 +7,12 @@ dotenv.config()
 const app = express()
 const port = process.env.PORT
 
+// static serving
+app.use(express.static('dist'))
 
 // paths
-app.get('/', (_: Request, res: Response) => {
-    res.send('Hello World!')
+app.get('/hello', (_: Request, res: Response) => {
+    res.send('Hello World! I am from Express JS')
 })
 
 app.listen(port, () => {

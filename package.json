@@ -6,7 +6,9 @@
   "scripts": {
     "client": "webpack-dev-server --mode development --devtool inline-source-map --hot",
     "server": "nodemon src/server/index.ts",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "dev": "concurrently \"yarn server\" \"yarn client\"",
+    "build": "webpack --mode production",
+    "prod": "yarn build && ts-node --transpile-only src/server/index.ts"
   },
   "devDependencies": {
     "@webpack-cli/generators": "^2.5.0",
