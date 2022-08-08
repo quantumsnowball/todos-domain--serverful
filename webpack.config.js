@@ -14,8 +14,11 @@ const config = {
     path: path.resolve(__dirname, "dist"),
   },
   devServer: {
-    open: true,
-    host: "localhost",
+    proxy: {
+      '/api': {
+        target: 'http://127.0.0.1:3000',
+      }
+    }
   },
   plugins: [
     new HtmlWebpackPlugin({
