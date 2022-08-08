@@ -24,11 +24,14 @@ function Register() {
 }
 
 function Login() {
+  const handleSubmit = () => {
+    () => alert('submit the form')
+  }
   return (
     <div>
       <h1>Login</h1>
       <br />
-      <form onSubmit={() => alert('submit the form')} method="POST">
+      <form method="POST" action='/api/login'>
         <div>
           <label>Email:</label>
           <input id="email" name="email" type="email" />
