@@ -47,6 +47,16 @@ function Login() {
   )
 }
 
+function NotFound() {
+  return (
+    <div>
+      <h1>Page Not Found</h1>
+      <br />
+      <Link to="/">back</Link>
+    </div>
+  )
+}
+
 function App() {
   return (
     <BrowserRouter>
@@ -54,6 +64,7 @@ function App() {
         <Route path="/" element={<Homepage />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   )

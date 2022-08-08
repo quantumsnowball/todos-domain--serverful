@@ -1,12 +1,18 @@
 // Generated using webpack-cli https://github.com/webpack/webpack-cli
-
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const WorkboxWebpackPlugin = require("workbox-webpack-plugin");
+const dotenv = require('dotenv')
+
+
+dotenv.config()
+
 
 const isProduction = process.env.NODE_ENV == "production";
-
+const port_client = process.env.PORT_CLIENT
+const port_server = process.env.PORT_SERVER
 const stylesHandler = "style-loader";
+
 
 const config = {
   entry: "./src/client/index.tsx",
@@ -14,9 +20,10 @@ const config = {
     path: path.resolve(__dirname, "dist"),
   },
   devServer: {
+    port: port_client,
     proxy: {
       '/api': {
-        target: 'http://127.0.0.1:3000',
+        target: `http://localhost:${port_server}`,
       }
     }
   },
