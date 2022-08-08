@@ -20,7 +20,7 @@ const FlexColumnDiv = styled('div')`
 
 function App() {
   const mode = 'light'
-  const name = 'ocean'
+  const name = 'elementary'
   const theme = useCallback(() => createTheme(chooseTheme(name)(mode)), [name, mode])
 
   useEffect(() => {

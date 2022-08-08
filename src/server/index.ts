@@ -32,9 +32,13 @@ api.route('/hello').get((_: Request, res: Response) => {
 api.post('/login', (req: Request, res: Response) => {
     const { email, password } = req.body
     if (userIsValid(email, password)) {
-        res.status(200).send(`You are logging in as ${email}`)
+        res.status(200).json({
+            message: `You are logging in as ${email}`
+        })
     } else {
-        res.status(401).send(`User ${email} does not exist, please try again`)
+        res.status(401).json({
+            message: `User ${email} does not exist, please try again`
+        })
     }
 })
 

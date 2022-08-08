@@ -1,5 +1,5 @@
-POST http://localhost:3333/api/login
+POST http://localhost:8888/api/login
 Content-Type: application/json
 
-{ "email": "foo.user", "password": "simplepw" }
+{ "email": "a@b.c", "password": "w" }
 
