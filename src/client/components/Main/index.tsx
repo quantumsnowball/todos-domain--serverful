@@ -7,13 +7,13 @@ import { styled } from '@mui/material'
 
 
 // .main-ctn
-const ScrollableDiv = styled('div')`
+const CenteredDiv = styled('div')`
   /* take all flex space from parents */
   flex-grow: 1;
   /* flex column display all quote cards */
   display: flex;
   flex-flow: column nowrap;
-  justify-content: flex-start;
+  justify-content: center;
   align-item: stretch;
   align-content: center;
   /* allow scrollbar here*/
@@ -24,7 +24,7 @@ const ScrollableDiv = styled('div')`
 
 export default function Main() {
   return (
-    <ScrollableDiv className='main-ctn'>
+    <CenteredDiv className='main-ctn'>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Homepage />} />
@@ -33,7 +33,7 @@ export default function Main() {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
-    </ScrollableDiv>
+    </CenteredDiv>
   )
 }
 

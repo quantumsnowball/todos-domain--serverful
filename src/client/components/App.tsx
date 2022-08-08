@@ -12,7 +12,7 @@ const FlexColumnDiv = styled('div')`
   display: flex;
   flex-flow: column nowrap;
   justify-content: space-between;
-  align-items: stretch;
+  align-items: center;
   /* theme */
   color: ${props => props.theme.palette.text.primary};
   background-color: ${props => props.theme.palette.background.default};
