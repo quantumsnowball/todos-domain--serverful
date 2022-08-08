@@ -1,75 +1,38 @@
-import { Routes, Route, BrowserRouter, Link } from 'react-router-dom'
+import { useCallback, useEffect } from 'react'
+import Main from './Main'
+import { createTheme, styled, ThemeProvider } from '@mui/material'
+import chooseTheme from '../styles/theme'
 
 
-function Homepage() {
-  return (
-    <div>
-      <h1>Homepage</h1>
-      <br />
-      <Link to="/register">Register</Link>
-      <br />
-      <Link to="/login">Login</Link>
-    </div>
-  )
-}
-
-function Register() {
-  return (
-    <div>
-      <h1>Register</h1>
-      <br />
-      <Link to="/">back</Link>
-    </div>
-  )
-}
-
-function Login() {
-  const handleSubmit = () => {
-    () => alert('submit the form')
-  }
-  return (
-    <div>
-      <h1>Login</h1>
-      <br />
-      <form method="POST" action='/api/login'>
-        <div>
-          <label>Email:</label>
-          <input id="email" name="email" type="email" />
-        </div>
-        <div>
-          <label>Password:</label>
-          <input id="password" name="password" type="password" />
-        </div>
-        <div>
-          <input id="submit" type="submit" />
-        </div>
-      </form>
-      <br />
-      <Link to="/">back</Link>
-    </div>
-  )
-}
-
-function NotFound() {
-  return (
-    <div>
-      <h1>Page Not Found</h1>
-      <br />
-      <Link to="/">back</Link>
-    </div>
-  )
-}
+const FlexColumnDiv = styled('div')`
+  /* cover full viewport */
+  width: 100vw;
+  height: 100vh;
+  /* flex column display sections */
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-between;
+  align-items: stretch;
+  /* theme */
+  color: ${props => props.theme.palette.text.primary};
+  background-color: ${props => props.theme.palette.background.default};
+`
 
 function App() {
+  const mode = 'light'
+  const name = 'ocean'
+  const theme = useCallback(() => createTheme(chooseTheme(name)(mode)), [name, mode])
+
+  useEffect(() => {
+    document.body.style.backgroundColor = theme().palette.background.default
+  }, [theme])
+
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Homepage />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </BrowserRouter>
+    <ThemeProvider theme={theme}>
+      <FlexColumnDiv className="app-ctn">
+        <Main />
+      </FlexColumnDiv>
+    </ThemeProvider>
   )
 }
 
