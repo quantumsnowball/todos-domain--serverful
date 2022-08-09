@@ -22,17 +22,16 @@ export default function Login() {
   const [password, setPassword] = useState('')
 
   const handleLogin = async () => {
-    console.log({ email, password })
     const res = await fetch('/api/login', {
       method: 'POST',
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password })
     })
-    const body = await res.json()
-    if (res.status !== 200) {
-      console.log(body)
-    } else {
-      console.log(body)
+    try {
+      const body = await res.json()
+      console.log(body.message)
+    } catch (error) {
+      console.log(error)
     }
   }
 

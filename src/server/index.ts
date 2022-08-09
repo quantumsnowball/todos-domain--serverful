@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express'
-import path from 'path'
 import dotenv from 'dotenv'
 import history from 'connect-history-api-fallback'
+import jwt from 'jsonwebtoken'
 
 //
 // Configs
@@ -31,15 +31,19 @@ api.route('/hello').get((_: Request, res: Response) => {
 
 api.post('/login', (req: Request, res: Response) => {
     const { email, password } = req.body
-    if (userIsValid(email, password)) {
-        res.status(200).json({
-            message: `You are logging in as ${email}`
-        })
-    } else {
+    if (!userIsValid(email, password))
         res.status(401).json({
             message: `User ${email} does not exist, please try again`
         })
-    }
+    const { accessToken, refreshToken } = signAccessToken({
+        id: Date.now(),
+        username: email
+    })
+    res.status(200).json({
+        message: `Logged in as ${email}`,
+        accessToken,
+        refreshToken
+    })
 })
 
 app.use('/api', api)
@@ -57,3 +61,11 @@ app.listen(port_server, () => {
 const userIsValid = (email: string, password: string) =>
     (email === 'a@b.c' && password === 'w')
 
+// JWT helpers
+const signAccessToken = (payload: any) => {
+    const accessToken = jwt.sign(
+        { ...payload }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1m' })
+    const refreshToken = jwt.sign(
+        { ...payload }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '5m' })
+    return { accessToken, refreshToken }
+}
