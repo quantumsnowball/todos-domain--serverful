@@ -29,9 +29,9 @@ export default function Login() {
     })
     try {
       const body = await res.json()
-      console.log(body.message)
+      alert(body.message)
     } catch (error) {
-      console.log(error)
+      alert(error)
     }
   }
 

@@ -41,11 +41,11 @@ export default function Register() {
 
     try {
       const body = await res.json()
-      console.log(body.message)
+      alert(body.message)
       if (res.status === 200)
         navigate('/login')
     } catch (error) {
-      console.log(error)
+      alert(error)
     }
   }
 
