@@ -3,10 +3,10 @@ import dotenv from 'dotenv'
 import history from 'connect-history-api-fallback'
 import { User } from './types'
 import {
-    checkIfUserAlreadyExists,
-    registerUserToDatabase,
-    checkUserEmailPassword,
-    signToken
+  checkIfUserAlreadyExists,
+  registerUserToDatabase,
+  checkUserEmailPassword,
+  signToken
 } from './auth'
 
 //
@@ -38,9 +38,9 @@ app.use(express.static('dist'))
 // paths
 //
 api.route('/hello').get((_: Request, res: Response) => {
-    return res.send({
-        message: 'Hello World! Greeting from Express JS.'
-    })
+  return res.send({
+    message: 'Hello World! Greeting from Express JS.'
+  })
 })
 
 api.post('/register', checkIfUserAlreadyExists, registerUserToDatabase)
@@ -53,6 +53,6 @@ app.use('/api', api)
 // port
 //
 app.listen(port_server, () => {
-    console.log(`Express server listening on port ${port_server}`)
+  console.log(`Express server listening on port ${port_server}`)
 })
 
