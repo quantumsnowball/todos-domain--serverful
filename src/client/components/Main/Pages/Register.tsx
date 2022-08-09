@@ -1,6 +1,6 @@
 import { Button, FormControl, styled, TextField, Typography } from '@mui/material'
 import { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 
 const Div = styled('div')`
@@ -22,6 +22,7 @@ export default function Register() {
   const [password, setPassword] = useState('')
   const [passwordAgain, setPasswordAgain] = useState('')
   const [passwordMatch, setPasswordMatch] = useState(false)
+  const navigate = useNavigate()
 
   useEffect(() => {
     setPasswordMatch(password === passwordAgain)
@@ -37,9 +38,12 @@ export default function Register() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password })
     })
+
     try {
       const body = await res.json()
       console.log(body.message)
+      if (res.status === 200)
+        navigate('/login')
     } catch (error) {
       console.log(error)
     }
@@ -57,7 +61,7 @@ export default function Register() {
       <Typography
         variant="h3"
         sx={{ textAlign: 'center' }}
-      >Login</Typography>
+      >Register</Typography>
       <FormControl>
         <TextField
           required
