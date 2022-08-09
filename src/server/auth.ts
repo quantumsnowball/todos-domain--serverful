@@ -1,12 +1,20 @@
 import jwt from 'jsonwebtoken'
+import bcrypt from 'bcrypt'
 import { User } from './types'
 
 
 //
 // dev dummy simulation
 //
-export const userIsAuthorized = (email: string, password: string, users: User[]) =>
-    users.some(user => user.email === email && user.password == password)
+export const userIsAuthorized = async (email: string, password: string, users: User[]) => {
+    const user = users.find(user => user.email === email)
+    console.log({ users })
+    if (!user)
+        return false
+    const result = await bcrypt.compare(password, user.hashedPassword)
+    console.log({ result })
+    return result
+}
 
 export const userAlreadyExists = (email: string, users: User[]) =>
     users.some(user => user.email === email)

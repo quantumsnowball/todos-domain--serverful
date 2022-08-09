@@ -1,6 +1,7 @@
 import express, { Request, Response } from 'express'
 import dotenv from 'dotenv'
 import history from 'connect-history-api-fallback'
+import bcrypt from 'bcrypt'
 import { User } from './types'
 import {
     userAlreadyExists,
@@ -12,7 +13,7 @@ import {
 // dev dummy simulation
 //
 // dummy user database
-const users: User[] = [{ email: 'a@b.c', password: 'w' }]
+const users: User[] = []
 
 //
 // Configs
@@ -24,7 +25,7 @@ const port_server = process.env.PORT_SERVER || 3000
 const app = express()
 const api = express.Router()
 app.use(history())
-// middleware
+// global middleware
 app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
 
@@ -42,7 +43,7 @@ api.route('/hello').get((_: Request, res: Response) => {
     })
 })
 
-api.post('/register', (req: Request, res: Response) => {
+api.post('/register', async (req: Request, res: Response) => {
     const { email, password } = req.body
 
     if (userAlreadyExists(email, users)) {
@@ -52,7 +53,8 @@ api.post('/register', (req: Request, res: Response) => {
     }
 
     try {
-        users.push({ email, password })
+        const hashedPassword = await bcrypt.hash(password, 10)
+        users.push({ email, hashedPassword })
         return res.status(200).json({
             message: `User ${email} is registered successfully.`
         })
@@ -61,10 +63,10 @@ api.post('/register', (req: Request, res: Response) => {
     }
 })
 
-api.post('/login', (req: Request, res: Response) => {
+api.post('/login', async (req: Request, res: Response) => {
     const { email, password } = req.body
 
-    if (!userIsAuthorized(email, password, users)) {
+    if (!await userIsAuthorized(email, password, users)) {
         return res.status(401).json({
             message: `User ${email} does not exist, please try again.`
         })
