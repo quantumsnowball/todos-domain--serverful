@@ -1,7 +1,6 @@
 import express, { Request, Response } from 'express'
 import dotenv from 'dotenv'
 import history from 'connect-history-api-fallback'
-import { User } from './types'
 import {
   checkIfUserAlreadyExists,
   registerUserToDatabase,
@@ -9,11 +8,6 @@ import {
   signToken
 } from './auth'
 
-//
-// dev dummy simulation
-//
-// dummy user database
-const users: User[] = []
 
 //
 // Configs
