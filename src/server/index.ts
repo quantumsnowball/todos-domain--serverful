@@ -37,7 +37,7 @@ app.use(express.static('dist'))
 // paths
 //
 api.route('/hello').get((_: Request, res: Response) => {
-    res.send({
+    return res.send({
         message: 'Hello World! Greeting from Express JS.'
     })
 })
@@ -46,19 +46,18 @@ api.post('/register', (req: Request, res: Response) => {
     const { email, password } = req.body
 
     if (userAlreadyExists(email, users)) {
-        res.status(406).json({
+        return res.status(406).json({
             message: `Email address ${email} has already been taken, please use another email address.`
         })
-        return
     }
 
     try {
         users.push({ email, password })
-        res.status(200).json({
+        return res.status(200).json({
             message: `User ${email} is registered successfully.`
         })
     } catch (error) {
-        res.status(406).json({ message: error })
+        return res.status(406).json({ message: error })
     }
 })
 
@@ -66,17 +65,16 @@ api.post('/login', (req: Request, res: Response) => {
     const { email, password } = req.body
 
     if (!userIsAuthorized(email, password, users)) {
-        res.status(401).json({
+        return res.status(401).json({
             message: `User ${email} does not exist, please try again.`
         })
-        return
     }
 
     const { accessToken, refreshToken } = signAccessToken({
         id: Date.now(),
         username: email
     })
-    res.json({
+    return res.json({
         message: `Logged in as ${email}`,
         accessToken,
         refreshToken
