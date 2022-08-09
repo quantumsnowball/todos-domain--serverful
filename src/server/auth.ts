@@ -10,25 +10,26 @@ import { RequestHandler } from 'express'
 // dummy user database
 const users: User[] = []
 
+// 
 // middleware
+//
 export const checkIfUserAlreadyExists: RequestHandler = (req, res, next) => {
+  // check if user already exists
   const userFound = users.find(user => user.email === req.body.email)
   if (userFound)
     return res.status(406).json({
       message: `Email address ${userFound.email} has already been taken, please use another email address.`
     })
+  // all checks passed
   next()
 }
 
 export const registerUserToDatabase: RequestHandler = async (req, res) => {
-  try {
-    const { email, password } = req.body
-    const hashedPassword = await bcrypt.hash(password, 10)
-    users.push({ email, hashedPassword })
-    return res.status(200).json({ message: `User ${email} is registered successfully.` })
-  } catch (error) {
-    return res.status(406).json({ message: error })
-  }
+  // add user to database
+  const { email, password } = req.body
+  const hashedPassword = await bcrypt.hash(password, 10)
+  users.push({ email, hashedPassword })
+  return res.status(200).json({ message: `User ${email} is registered successfully.` })
 }
 
 export const checkUserEmailPassword: RequestHandler = async (req, res, next) => {
@@ -49,6 +50,7 @@ export const checkUserEmailPassword: RequestHandler = async (req, res, next) => 
 }
 
 export const signToken: RequestHandler = async (req, res) => {
+  // sign token
   const { email } = req.body
   const { accessToken, refreshToken } = signAccessToken({ id: Date.now(), username: email })
   return res.json({
