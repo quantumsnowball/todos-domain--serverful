@@ -5,8 +5,11 @@ import { User } from './types'
 //
 // dev dummy simulation
 //
-export const userIsValid = (email: string, password: string, users: User[]) =>
+export const userIsAuthorized = (email: string, password: string, users: User[]) =>
     users.some(user => user.email === email && user.password == password)
+
+export const userAlreadyExists = (email: string, users: User[]) =>
+    users.some(user => user.email === email)
 
 
 // JWT helpers

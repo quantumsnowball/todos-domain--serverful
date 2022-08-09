@@ -2,7 +2,11 @@ import express, { Request, Response } from 'express'
 import dotenv from 'dotenv'
 import history from 'connect-history-api-fallback'
 import { User } from './types'
-import { userIsValid, signAccessToken } from './auth'
+import {
+    userAlreadyExists,
+    userIsAuthorized,
+    signAccessToken
+} from './auth'
 
 //
 // dev dummy simulation
@@ -33,15 +37,25 @@ app.use(express.static('dist'))
 // paths
 //
 api.route('/hello').get((_: Request, res: Response) => {
-    res.send('Hello World! Greeting from Express JS.')
+    res.send({
+        message: 'Hello World! Greeting from Express JS.'
+    })
 })
 
 api.post('/register', (req: Request, res: Response) => {
     const { email, password } = req.body
+
+    if (userAlreadyExists(email, users)) {
+        res.status(406).json({
+            message: `Email address ${email} has already been taken, please use another email address.`
+        })
+        return
+    }
+
     try {
         users.push({ email, password })
         res.status(200).json({
-            message: `User ${email} is registered successfully`
+            message: `User ${email} is registered successfully.`
         })
     } catch (error) {
         res.status(406).json({ message: error })
@@ -51,9 +65,9 @@ api.post('/register', (req: Request, res: Response) => {
 api.post('/login', (req: Request, res: Response) => {
     const { email, password } = req.body
 
-    if (!userIsValid(email, password, users)) {
+    if (!userIsAuthorized(email, password, users)) {
         res.status(401).json({
-            message: `User ${email} does not exist, please try again`
+            message: `User ${email} does not exist, please try again.`
         })
         return
     }
