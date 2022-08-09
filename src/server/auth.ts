@@ -53,11 +53,10 @@ export const signToken: RequestHandler = async (req, res) => {
   // sign token
   const { email } = req.body
   const { accessToken, refreshToken } = signAccessToken({ id: Date.now(), username: email })
-  return res.json({
-    message: `Logged in as ${email}`,
-    accessToken,
-    refreshToken
-  })
+  return res
+    .cookie('accessToken', accessToken, { httpOnly: true })
+    .cookie('refreshToken', refreshToken, { httpOnly: true })
+    .json({ message: `Logged in as ${email}` })
 }
 
 // JWT helpers
