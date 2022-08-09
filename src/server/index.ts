@@ -1,8 +1,14 @@
 import express, { Request, Response } from 'express'
 import dotenv from 'dotenv'
 import history from 'connect-history-api-fallback'
-import jwt from 'jsonwebtoken'
 import { User } from './types'
+import { userIsValid, signAccessToken } from './auth'
+
+//
+// dev dummy simulation
+//
+// dummy user database
+const users: User[] = [{ email: 'a@b.c', password: 'w' }]
 
 //
 // Configs
@@ -45,7 +51,7 @@ api.post('/register', (req: Request, res: Response) => {
 api.post('/login', (req: Request, res: Response) => {
     const { email, password } = req.body
 
-    if (!userIsValid(email, password)) {
+    if (!userIsValid(email, password, users)) {
         res.status(401).json({
             message: `User ${email} does not exist, please try again`
         })
@@ -72,21 +78,3 @@ app.listen(port_server, () => {
     console.log(`Express server listening on port ${port_server}`)
 })
 
-//
-// dev dummy simulation
-//
-// dummy user database
-const users: User[] = []
-
-const userIsValid = (email: string, password: string) =>
-    users.some(user => user.email === email && user.password == password)
-
-
-// JWT helpers
-const signAccessToken = (payload: any) => {
-    const accessToken = jwt.sign(
-        { ...payload }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1m' })
-    const refreshToken = jwt.sign(
-        { ...payload }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '5m' })
-    return { accessToken, refreshToken }
-}
