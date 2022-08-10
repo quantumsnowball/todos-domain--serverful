@@ -6,7 +6,7 @@ import {
   registerUserToDatabase,
   checkUserEmailPassword,
   signToken
-} from './auth'
+} from './middleware/auth'
 
 
 //
@@ -37,9 +37,15 @@ api.route('/hello').get((_: Request, res: Response) => {
   })
 })
 
-api.post('/register', checkIfUserAlreadyExists, registerUserToDatabase)
+api.post('/register',
+  checkIfUserAlreadyExists,
+  registerUserToDatabase
+)
 
-api.post('/login', checkUserEmailPassword, signToken)
+api.post('/login',
+  checkUserEmailPassword,
+  signToken
+)
 
 app.use('/api', api)
 
