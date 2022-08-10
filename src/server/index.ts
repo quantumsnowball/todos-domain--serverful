@@ -2,11 +2,13 @@ import express, { Request, Response } from 'express'
 import dotenv from 'dotenv'
 import history from 'connect-history-api-fallback'
 import {
+  checkAccessToken,
   checkIfUserAlreadyExists,
   registerUserToDatabase,
   checkUserEmailPassword,
   signToken
 } from './middleware/auth'
+import cookieParser from 'cookie-parser'
 
 
 //
@@ -22,6 +24,7 @@ app.use(history())
 // global middleware
 app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
+app.use(cookieParser())
 
 //
 // static serving
@@ -36,6 +39,18 @@ api.route('/hello').get((_: Request, res: Response) => {
     message: 'Hello World! Greeting from Express JS.'
   })
 })
+
+api.post('/todos',
+  checkAccessToken,
+  (_: Request, res: Response) => {
+    return res.status(200).json([
+      { title: 'item1', content: 'content1' },
+      { title: 'item2', content: 'content2' },
+      { title: 'item3', content: 'content3' }
+    ])
+  }
+
+)
 
 api.post('/register',
   checkIfUserAlreadyExists,

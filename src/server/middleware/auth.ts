@@ -13,6 +13,22 @@ const users: User[] = []
 // 
 // middleware
 //
+export const checkAccessToken: RequestHandler = (req, res, next) => {
+  // check if the jwt token is still valid
+  try {
+    jwt.verify(
+      req.cookies.accessToken,
+      process.env.ACCESS_TOKEN_SECRET
+    )
+    next()
+  } catch (error) {
+    console.log(error)
+    return res.status(401).json({
+      message: error.toString()
+    })
+  }
+}
+
 export const checkIfUserAlreadyExists: RequestHandler = (req, res, next) => {
   // check if user already exists
   const userFound = users.find(user => user.email === req.body.email)
