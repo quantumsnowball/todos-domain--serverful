@@ -1,7 +1,9 @@
 import { useCallback, useEffect } from 'react'
+import MenuBar from './MenuBar'
 import Main from './Main'
 import { createTheme, styled, ThemeProvider } from '@mui/material'
 import chooseTheme from '../styles/theme'
+import { BrowserRouter } from 'react-router-dom'
 
 
 const FlexColumnDiv = styled('div')`
@@ -29,9 +31,12 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <FlexColumnDiv className="app-ctn">
-        <Main />
-      </FlexColumnDiv>
+      <BrowserRouter>
+        <FlexColumnDiv className="app-ctn">
+          <MenuBar />
+          <Main />
+        </FlexColumnDiv>
+      </BrowserRouter>
     </ThemeProvider>
   )
 }

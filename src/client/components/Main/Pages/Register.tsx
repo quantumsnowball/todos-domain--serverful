@@ -59,7 +59,7 @@ export default function Register() {
   return (
     <Div>
       <Typography
-        variant="h3"
+        variant="h4"
         sx={{ textAlign: 'center' }}
       >Register</Typography>
       <FormControl>
@@ -114,10 +114,10 @@ export default function Register() {
       </FormControl>
       <Button
         component={Link}
-        to="/"
+        to="/login"
         sx={{ alignSelf: 'flex-start' }}
       >
-        back
+        Login
       </Button>
     </Div>
   )
