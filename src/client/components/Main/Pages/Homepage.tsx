@@ -9,7 +9,7 @@ export default function Homepage() {
   return (
     <div>
       {refreshToken ?
-        <h1>Fetch and show your todo list.</h1>
+        <h1>User logged in. Showing your todo list.</h1>
         :
         <h1>Please <Link to="/login">Login</Link> to view your Todo list. </h1>}
     </div>
