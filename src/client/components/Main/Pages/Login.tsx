@@ -1,6 +1,8 @@
 import { Button, FormControl, styled, TextField, Typography } from '@mui/material'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { tokenActions } from '../../../redux/slices/tokenSlice'
 
 
 const Div = styled('div')`
@@ -18,6 +20,7 @@ const Div = styled('div')`
 `
 
 export default function Login() {
+  const dispatch = useDispatch()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
@@ -29,6 +32,7 @@ export default function Login() {
     })
     try {
       const body = await res.json()
+      dispatch(tokenActions.setRefreshToken(body.refreshToken))
       alert(body.message)
     } catch (error) {
       alert(error)

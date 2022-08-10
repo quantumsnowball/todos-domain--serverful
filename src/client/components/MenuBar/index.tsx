@@ -8,9 +8,12 @@ import {
 import MenuIcon from '@mui/icons-material/Menu'
 import { useTheme } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
+import { RootState } from '../../redux/store'
+import { useSelector } from 'react-redux'
 
 
 function MenuBar() {
+  const refreshToken = useSelector((s: RootState) => s.token.refreshToken)
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
   const navigate = useNavigate()
@@ -35,10 +38,16 @@ function MenuBar() {
         >
           TODOs
         </Typography>
-        <Button
-          color="inherit"
-          onClick={() => navigate('/login')}
-        >Login</Button>
+        {refreshToken ?
+          <Button
+            color="inherit"
+            onClick={() => navigate('/login')}
+          >Logout</Button>
+          : <Button
+            color="inherit"
+            onClick={() => navigate('/login')}
+          >Login</Button>
+        }
       </Toolbar>
     </AppBar>
   )
