@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
-import { User } from './types'
+import { User } from '../types'
 import { RequestHandler } from 'express'
 
 
