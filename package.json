@@ -7,7 +7,7 @@
     "client": "webpack-dev-server --mode development --history-api-fallback --devtool inline-source-map --hot",
     "server": "nodemon src/server/index.ts",
     "dev": "concurrently \"yarn server\" \"yarn client\"",
-    "dev:docker": "docker compose -f ./docker/docker-compose.dev.yml up; docker compose -f ./docker/docker-compose.dev.yml down",
+    "dev:docker": "./docker/dev-up.sh; ./docker/dev-down.sh",
     "build": "webpack --mode production",
     "prod": "yarn build && ts-node --transpile-only src/server/index.ts"
   },

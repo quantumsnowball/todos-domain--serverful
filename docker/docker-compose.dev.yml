@@ -6,7 +6,7 @@ services:
     container_name: dev-express
     working_dir: /app
     ports:
-      - '8888:8888'
+      - "${PORT_CLIENT}:${PORT_CLIENT}"
     command: sh -c 'cd /app && yarn && yarn dev'
     volumes:
       - ../:/app
@@ -18,7 +18,7 @@ services:
     image: mongo
     container_name: dev-mongo
     ports:
-      - '27017:27017'
+      - "${PORT_MONGO}:${PORT_MONGO}"
     volumes:
       - mongo-data:/data/db
       - mongo-config:/data/configdb
