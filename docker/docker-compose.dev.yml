@@ -11,4 +11,25 @@ services:
     volumes:
       - ../:/app
       - ./node_modules:/app/node_modules
+    networks:
+      - node-network
+
+  mongodb:
+    image: mongo
+    container_name: dev-mongo
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongo-data:/data/db
+      - mongo-config:/data/configdb
+    networks:
+      - node-network
+
+volumes:
+  mongo-data:
+  mongo-config:
+
+networks:
+  node-network:
+    driver: bridge
 
