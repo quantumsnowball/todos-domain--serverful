@@ -6,7 +6,9 @@ import {
   checkIfUserAlreadyExists,
   registerUserToDatabase,
   checkUserEmailPassword,
-  signToken
+  signToken,
+  checkRefreshToken,
+  renewToken
 } from './middleware/auth'
 import cookieParser from 'cookie-parser'
 
@@ -60,6 +62,11 @@ api.post('/register',
 api.post('/login',
   checkUserEmailPassword,
   signToken
+)
+
+api.post('/renew',
+  checkRefreshToken,
+  renewToken
 )
 
 app.use('/api', api)

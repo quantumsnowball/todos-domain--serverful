@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
-import { User } from '../types'
+import { TokenPayload, User } from '../types'
 import { RequestHandler } from 'express'
 
 
@@ -9,6 +9,7 @@ import { RequestHandler } from 'express'
 //
 // dummy user database
 const users: User[] = []
+const tokens: string[] = []
 
 // 
 // middleware
@@ -65,10 +66,25 @@ export const checkUserEmailPassword: RequestHandler = async (req, res, next) => 
   next()
 }
 
+export const checkRefreshToken: RequestHandler = (req, res, next) => {
+  const { refreshToken } = req.body
+  try {
+    if (tokens.includes(refreshToken) && jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET)) {
+      next()
+    }
+  } catch (error) { }
+  return res.status(401).json({ message: 'Session expired, please login again.' })
+}
+
 export const signToken: RequestHandler = async (req, res) => {
   // sign token
   const { email } = req.body
-  const { accessToken, refreshToken } = signAccessToken({ id: Date.now(), username: email })
+  const payload: TokenPayload = { id: Date.now(), user: email }
+  const accessToken = jwt.sign(
+    { ...payload }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1m' })
+  const refreshToken = jwt.sign(
+    { ...payload }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '5m' })
+  tokens.push(refreshToken)
   return res
     .cookie('accessToken', accessToken, { httpOnly: true })
     .json({
@@ -77,12 +93,13 @@ export const signToken: RequestHandler = async (req, res) => {
     })
 }
 
-// JWT helpers
-export const signAccessToken = (payload: any) => {
+export const renewToken: RequestHandler = (req, res) => {
+  const { email } = req.body
+  const payload: TokenPayload = { id: Date.now(), user: email }
   const accessToken = jwt.sign(
     { ...payload }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1m' })
-  const refreshToken = jwt.sign(
-    { ...payload }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '5m' })
-  return { accessToken, refreshToken }
+  return res.status(200)
+    .cookie('accessToken', accessToken, { httpOnly: true })
+    .json({ message: 'Token renew successfully.' })
 }
 
