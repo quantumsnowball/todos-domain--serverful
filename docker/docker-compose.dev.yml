@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  node-app:
+    image: node-app-dev
+    container_name: node-app-dev
+    build:
+      context: ../
+      dockerfile: ./docker/Dockerfile.dev
+    ports:
+      - '3333:3333'
+    command: yarn dev
+
