@@ -2,7 +2,12 @@ import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
 import { TokenPayload, User } from '../types'
 import { RequestHandler } from 'express'
+import db from '../database'
 
+
+// globals
+const DATABASE = 'todos'
+const USERS_COLLECTION = 'users'
 
 //
 // dev dummy simulation
@@ -46,6 +51,7 @@ export const registerUserToDatabase: RequestHandler = async (req, res) => {
   const { email, password } = req.body
   const hashedPassword = await bcrypt.hash(password, 10)
   users.push({ email, hashedPassword })
+  db.insertUser(DATABASE, USERS_COLLECTION, { email, hashedPassword })
   return res.status(200).json({ message: `User ${email} is registered successfully.` })
 }
 

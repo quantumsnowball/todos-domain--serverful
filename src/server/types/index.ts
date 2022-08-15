@@ -11,4 +11,4 @@ export interface TokenPayload {
   user: string
 }
 
-export type MongoOperation = (client: Collection) => Promise<void>
+export type MongoOperation = (client: Collection, payload?: any) => Promise<void>

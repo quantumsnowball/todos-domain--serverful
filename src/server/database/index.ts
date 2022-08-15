@@ -1,6 +1,6 @@
 import dotenv from 'dotenv'
 import { MongoClient, Collection } from 'mongodb'
-import { MongoOperation } from '../types'
+import { MongoOperation, User } from '../types'
 
 
 // env
@@ -10,16 +10,10 @@ const port_mongo = process.env.PORT_MONGO
 
 // globals
 const URL_MONGO = `mongodb://${host_mongo}:${port_mongo}`
-const TEST_DATABASE = 'test'
-const TEST_COLLECTION = 'playground'
-const MAIN_DATABASE = 'todos'
-const USERS_COLLECTION = 'users'
 
-// decorator
-const collectionOperation = (
-  databaseName: string,
-  collectionName: string,
-  func: MongoOperation) => async () => {
+// operation decorator
+const operation = (func: MongoOperation) =>
+  async (databaseName: string, collectionName: string, payload?: any) => {
     const client = new MongoClient(URL_MONGO)
     try {
       // connect
@@ -27,8 +21,12 @@ const collectionOperation = (
       // get db and collection
       const collection = client.db(databaseName).collection(collectionName)
       // do opertion
-      await func(collection)
-    } finally {
+      await func(collection, payload)
+    }
+    catch (error) {
+      console.log(error)
+    }
+    finally {
       // close client
       await client.close()
     }
@@ -36,7 +34,7 @@ const collectionOperation = (
 
 
 // test
-export const testMongoDb = collectionOperation(TEST_DATABASE, TEST_COLLECTION,
+const test = operation(
   async (collection: Collection) => {
     // try create
     await collection.insertOne({ message: 'Successfully inserted one new entry.' })
@@ -47,6 +45,13 @@ export const testMongoDb = collectionOperation(TEST_DATABASE, TEST_COLLECTION,
 )
 
 // insert user
-export const insertUser = async () => {
+const insertUser = operation(
+  async (collection: Collection, user: User) => {
+    await collection.insertOne(user)
+  }
+)
 
+export default {
+  test,
+  insertUser
 }
