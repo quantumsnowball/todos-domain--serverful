@@ -1,3 +1,4 @@
+import crypto from 'crypto'
 import dotenv from 'dotenv'
 import { MongoClient, Collection } from 'mongodb'
 import { MongoOperation, User, UserWithPassword } from '../types'
@@ -35,11 +36,24 @@ const operation = <R, P>(func: MongoOperation<R, P>) =>
 // test
 const test = operation(
   async (collection: Collection) => {
+    const key = crypto.randomBytes(32).toString('hex')
+    const filter = { key }
+    const oldItem = { key, value: 0 }
+    const newItem = { key, value: 1 }
     // try create
-    await collection.insertOne({ message: 'Successfully inserted one new entry.' })
+    await collection.insertOne(oldItem)
+    console.log('CREATE: Success')
     // try read
-    const result = await collection.findOne({})
-    console.log(result)
+    const r1 = await collection.findOne<typeof oldItem>(filter)
+    console.log(`READ: ${r1.key === key ? 'Success' : 'Fail'}`)
+    // try update
+    collection.replaceOne(filter, newItem)
+    const r2 = await collection.findOne({ key })
+    console.log(`UPDATE: ${r2.key === key ? 'Success' : 'Fail'}`)
+    // try delete
+    collection.deleteOne(filter)
+    const r3 = await collection.findOne({ key })
+    console.log(`DELETE: ${r3 === null ? 'Success' : 'Fail'}`)
   }
 )
 
