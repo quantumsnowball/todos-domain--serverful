@@ -12,8 +12,8 @@ const port_mongo = process.env.PORT_MONGO
 const URL_MONGO = `mongodb://${host_mongo}:${port_mongo}`
 
 // operation decorator
-const operation = (func: MongoOperation) =>
-  async (databaseName: string, collectionName: string, payload?: any) => {
+const operation = <T>(func: MongoOperation<T>) =>
+  async (databaseName: string, collectionName: string, payload?: any): Promise<T> => {
     const client = new MongoClient(URL_MONGO)
     try {
       // connect
@@ -32,7 +32,6 @@ const operation = (func: MongoOperation) =>
     }
   }
 
-
 // test
 const test = operation(
   async (collection: Collection) => {
@@ -41,8 +40,6 @@ const test = operation(
     // try read
     const result = await collection.findOne({})
     console.log(result)
-    // return
-    return true
   }
 )
 
@@ -57,7 +54,7 @@ const insertUser = operation(
 // find user
 const findUser = operation(
   async (collection: Collection, user: User) => {
-    return await collection.findOne(user)
+    return await collection.findOne<User>(user)
   }
 )
 

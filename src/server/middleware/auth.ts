@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
-import { TokenPayload, User } from '../types'
+import { TokenPayload } from '../types'
 import { RequestHandler } from 'express'
 import db from '../database'
 
@@ -13,7 +13,6 @@ const USERS_COLLECTION = 'users'
 // dev dummy simulation
 //
 // dummy user database
-const users: User[] = []
 const tokens: string[] = []
 
 // 
@@ -57,8 +56,9 @@ export const registerUserToDatabase: RequestHandler = async (req, res) => {
 }
 
 export const checkUserEmailPassword: RequestHandler = async (req, res, next) => {
+  const email = req.body.email
   // check email
-  const user = users.find(user => user.email === req.body.email)
+  const user = await db.findUser(DATABASE, USERS_COLLECTION, { email })
   if (!user)
     return res.status(401).json({
       message: `User ${req.body.email} does not exist, please try again.`
