@@ -21,7 +21,7 @@ const operation = (func: MongoOperation) =>
       // get db and collection
       const collection = client.db(databaseName).collection(collectionName)
       // do opertion
-      await func(collection, payload)
+      return await func(collection, payload)
     }
     catch (error) {
       console.log(error)
@@ -41,6 +41,8 @@ const test = operation(
     // try read
     const result = await collection.findOne({})
     console.log(result)
+    // return
+    return true
   }
 )
 
@@ -48,10 +50,19 @@ const test = operation(
 const insertUser = operation(
   async (collection: Collection, user: User) => {
     await collection.insertOne(user)
+    return true
+  }
+)
+
+// find user
+const findUser = operation(
+  async (collection: Collection, user: User) => {
+    return await collection.findOne(user)
   }
 )
 
 export default {
   test,
-  insertUser
+  insertUser,
+  findUser
 }

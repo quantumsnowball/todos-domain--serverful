@@ -1,4 +1,4 @@
-import { Collection } from 'mongodb'
+import { Collection, Document } from 'mongodb'
 
 
 export interface User {
@@ -11,4 +11,4 @@ export interface TokenPayload {
   user: string
 }
 
-export type MongoOperation = (client: Collection, payload?: any) => Promise<void>
+export type MongoOperation = (client: Collection, payload?: any) => Promise<Document | boolean>

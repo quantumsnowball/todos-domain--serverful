@@ -41,8 +41,9 @@ export default function Register() {
 
     try {
       const body = await res.json()
-      if (res.status === 200)
-        navigate('/login')
+      if (res.status !== 200)
+        alert(body.message)
+      navigate('/login')
     } catch (error) {
       alert(error)
     }

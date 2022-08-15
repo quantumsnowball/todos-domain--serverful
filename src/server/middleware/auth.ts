@@ -35,13 +35,15 @@ export const checkAccessToken: RequestHandler = (req, res, next) => {
   }
 }
 
-export const checkIfUserAlreadyExists: RequestHandler = (req, res, next) => {
+export const checkIfUserAlreadyExists: RequestHandler = async (req, res, next) => {
+  const email = req.body.email
   // check if user already exists
-  const userFound = users.find(user => user.email === req.body.email)
-  if (userFound)
+  const userFound = await db.findUser(DATABASE, USERS_COLLECTION, { email })
+  if (userFound) {
     return res.status(406).json({
-      message: `Email address ${userFound.email} has already been taken, please use another email address.`
+      message: `Email address ${email} has already been taken, please use another email address.`
     })
+  }
   // all checks passed
   next()
 }
@@ -50,7 +52,6 @@ export const registerUserToDatabase: RequestHandler = async (req, res) => {
   // add user to database
   const { email, password } = req.body
   const hashedPassword = await bcrypt.hash(password, 10)
-  users.push({ email, hashedPassword })
   db.insertUser(DATABASE, USERS_COLLECTION, { email, hashedPassword })
   return res.status(200).json({ message: `User ${email} is registered successfully.` })
 }
