@@ -8,6 +8,7 @@
     "server": "nodemon src/server/index.ts",
     "dev": "concurrently \"yarn server\" \"yarn client\"",
     "dev:docker": "./docker/dev-up.sh; ./docker/dev-down.sh",
+    "dev:docker:mongo": "docker exec -it dev-mongo mongo",
     "build": "webpack --mode production",
     "prod": "yarn build && ts-node --transpile-only src/server/index.ts"
   },
