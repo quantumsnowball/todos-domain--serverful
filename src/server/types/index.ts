@@ -3,6 +3,9 @@ import { Collection } from 'mongodb'
 
 export interface User {
   email: string,
+}
+
+export interface UserWithPassword extends User {
   hashedPassword: string
 }
 
@@ -11,4 +14,4 @@ export interface TokenPayload {
   user: string
 }
 
-export type MongoOperation<T> = (client: Collection, payload?: any) => Promise<T>
+export type MongoOperation<R, P> = (client: Collection, payload?: P) => Promise<R>

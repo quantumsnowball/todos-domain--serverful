@@ -1,6 +1,6 @@
 import dotenv from 'dotenv'
 import { MongoClient, Collection } from 'mongodb'
-import { MongoOperation, User } from '../types'
+import { MongoOperation, User, UserWithPassword } from '../types'
 
 
 // env
@@ -12,8 +12,8 @@ const port_mongo = process.env.PORT_MONGO
 const URL_MONGO = `mongodb://${host_mongo}:${port_mongo}`
 
 // operation decorator
-const operation = <T>(func: MongoOperation<T>) =>
-  async (databaseName: string, collectionName: string, payload?: any): Promise<T> => {
+const operation = <R, P>(func: MongoOperation<R, P>) =>
+  async (databaseName: string, collectionName: string, payload?: P): Promise<R> => {
     const client = new MongoClient(URL_MONGO)
     try {
       // connect
@@ -45,16 +45,15 @@ const test = operation(
 
 // insert user
 const insertUser = operation(
-  async (collection: Collection, user: User) => {
-    await collection.insertOne(user)
-    return true
+  async (collection: Collection, filter: UserWithPassword) => {
+    await collection.insertOne(filter)
   }
 )
 
 // find user
 const findUser = operation(
-  async (collection: Collection, user: User) => {
-    return await collection.findOne<User>(user)
+  async (collection: Collection, filter: User) => {
+    return await collection.findOne<UserWithPassword>(filter)
   }
 )
 
