@@ -39,9 +39,9 @@ api.post('/todos',
   checkAccessToken,
   (_: Request, res: Response) => {
     return res.status(200).json([
-      { title: 'item1', content: 'content1' },
-      { title: 'item2', content: 'content2' },
-      { title: 'item3', content: 'content3' }
+      { title: 'item1', content: Date.now() },
+      { title: 'item2', content: Date.now() },
+      { title: 'item3', content: Date.now() }
     ])
   }
 

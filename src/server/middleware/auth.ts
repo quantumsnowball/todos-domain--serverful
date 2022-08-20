@@ -1,4 +1,4 @@
-import jwt from 'jsonwebtoken'
+import jwt, { TokenExpiredError } from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
 import { TokenPayload } from '../types'
 import { RequestHandler } from 'express'
@@ -8,6 +8,8 @@ import db from '../database'
 // globals
 const DATABASE = 'todos'
 const USERS_COLLECTION = 'users'
+const ACCESS_TOKEN_LIFETIME = '5s'
+const REFRESH_TOKEN_LIFETIME = '2m'
 
 //
 // dev dummy simulation
@@ -27,10 +29,12 @@ export const checkAccessToken: RequestHandler = (req, res, next) => {
     )
     next()
   } catch (error) {
-    console.log(error)
-    return res.status(401).json({
-      message: error.toString()
-    })
+    if (error instanceof TokenExpiredError)
+      return res.status(401).json({
+        message: 'Your access token is expired, needs renewal.',
+        url: `${req.baseUrl}/renew`
+      })
+    return res.status(400).json({ message: error.toString() })
   }
 }
 
@@ -76,11 +80,17 @@ export const checkUserEmailPassword: RequestHandler = async (req, res, next) => 
 export const checkRefreshToken: RequestHandler = (req, res, next) => {
   const { refreshToken } = req.body
   try {
-    if (tokens.includes(refreshToken) && jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET)) {
+    const tokenExists = tokens.includes(refreshToken)
+    const tokenVerified = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET)
+    console.log({ tokenExists, tokenVerified })
+    if (tokenExists && tokenVerified) {
+      console.log('Token verified, gonna refresh it and then send back.')
       next()
-    }
-  } catch (error) { }
-  return res.status(401).json({ message: 'Session expired, please login again.' })
+    } else
+      return res.status(401).json({ message: 'Session expired, please login again.' })
+  } catch (error) {
+    return res.status(401).json({ message: error.toString() })
+  }
 }
 
 export const signToken: RequestHandler = async (req, res) => {
@@ -88,9 +98,9 @@ export const signToken: RequestHandler = async (req, res) => {
   const { email } = req.body
   const payload: TokenPayload = { id: Date.now(), user: email }
   const accessToken = jwt.sign(
-    { ...payload }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1m' })
+    { ...payload }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: ACCESS_TOKEN_LIFETIME })
   const refreshToken = jwt.sign(
-    { ...payload }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '5m' })
+    { ...payload }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: REFRESH_TOKEN_LIFETIME })
   tokens.push(refreshToken)
   return res
     .cookie('accessToken', accessToken, { httpOnly: true })
@@ -101,10 +111,14 @@ export const signToken: RequestHandler = async (req, res) => {
 }
 
 export const renewToken: RequestHandler = (req, res) => {
-  const { email } = req.body
-  const payload: TokenPayload = { id: Date.now(), user: email }
+  // decode to get back user infos
+  const decoded = jwt.decode(req.body.refreshToken)
+  if (typeof decoded === 'string' || !decoded.hasOwnProperty('user'))
+    return res.status(400).json({ message: 'Failed to decode refreshToken.' })
+  // sign new access token and return 200
+  const payload: TokenPayload = { id: Date.now(), user: decoded.user }
   const accessToken = jwt.sign(
-    { ...payload }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1m' })
+    { ...payload }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: ACCESS_TOKEN_LIFETIME })
   return res.status(200)
     .cookie('accessToken', accessToken, { httpOnly: true })
     .json({ message: 'Token renew successfully.' })
