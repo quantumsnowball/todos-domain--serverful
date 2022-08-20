@@ -8,16 +8,12 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 
-
-
 export const checkRefreshToken: RequestHandler = (req, res, next) => {
   const { refreshToken } = req.body
   try {
     const tokenExists = tokens.includes(refreshToken)
     const tokenVerified = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET)
-    console.log({ tokenExists, tokenVerified })
     if (tokenExists && tokenVerified) {
-      console.log('Token verified, gonna refresh it and then send back.')
       next()
     } else
       return res.status(401).json({ message: 'Session expired, please login again.' })
@@ -35,6 +31,7 @@ export const renewToken: RequestHandler = (req, res) => {
   const payload: TokenPayload = { id: Date.now(), user: decoded.user }
   const accessToken = jwt.sign(
     { ...payload }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: process.env.ACCESS_TOKEN_LIFETIME })
+  // return accessToken as httpOnly cookie and 200
   return res.status(200)
     .cookie('accessToken', accessToken, { httpOnly: true })
     .json({ message: 'Token renew successfully.' })

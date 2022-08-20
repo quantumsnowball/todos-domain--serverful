@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken'
-import { RequestHandler } from 'express'
 import bcrypt from 'bcrypt'
+import { RequestHandler } from 'express'
 import db from '../database'
 import { TokenPayload } from '../types'
 import dotenv from 'dotenv'

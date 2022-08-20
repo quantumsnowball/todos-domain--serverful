@@ -32,7 +32,7 @@ export default function Homepage() {
       // access token is invalid
       if (res.status === 401) {
         const body = await res.json()
-        console.log(body.message)
+        console.log(body)
         const renewResult = await renewToken(body.url)
         if (renewResult) {
           // trigger fetchTodos() to run again to get the todos list
