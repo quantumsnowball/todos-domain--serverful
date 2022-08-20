@@ -9,6 +9,7 @@ import { useState, useEffect } from 'react'
 export default function Homepage() {
   const refreshToken = useSelector((s: RootState) => s.token.refreshToken)
   const [tokenHasUpdated, setTokenHasUpdated] = useState(0)
+  const [todosUser, setTodosUser] = useState('')
   const [todos, setTodos] = useState<Todo[]>([{ title: 'item0', content: 'item0' }])
   const navigate = useNavigate()
 
@@ -49,7 +50,8 @@ export default function Homepage() {
         return
       }
       // successfully fetch todos list 
-      const todos = await res.json()
+      const { user, todos } = await res.json()
+      setTodosUser(user)
       setTodos(todos)
     }
     fetchTodos()
@@ -58,7 +60,10 @@ export default function Homepage() {
   return (
     <div>
       {refreshToken ?
-        todos.map((todo: Todo) => <div key={todo.title}>{todo.title}: {todo.content}</div>)
+        <>
+          <h3>Todos for {todosUser}:</h3>
+          {todos.map((todo: Todo) => <div key={todo.title}>{todo.title}: {todo.content}</div>)}
+        </>
         :
         <h1>Please <Link to="/login">Login</Link> to view your Todo list. </h1>}
     </div>

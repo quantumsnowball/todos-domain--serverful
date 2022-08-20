@@ -13,7 +13,8 @@ import {
   renewToken
 } from './middleware/renew'
 import {
-  checkAccessToken
+  checkAccessToken,
+  fetchTodos
 } from './middleware/resources'
 import cookieParser from 'cookie-parser'
 
@@ -43,14 +44,7 @@ api.route('/hello').get((_: Request, res: Response) => {
 
 api.post('/todos',
   checkAccessToken,
-  (_: Request, res: Response) => {
-    return res.status(200).json([
-      { title: 'item1', content: Date.now() },
-      { title: 'item2', content: Date.now() },
-      { title: 'item3', content: Date.now() }
-    ])
-  }
-
+  fetchTodos
 )
 
 api.post('/register',

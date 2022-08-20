@@ -21,3 +21,20 @@ export const checkAccessToken: RequestHandler = (req, res, next) => {
 }
 
 
+export const fetchTodos: RequestHandler = (req, res) => {
+  // decode to get back user infos
+  const decoded = jwt.decode(req.cookies.accessToken)
+  if (typeof decoded === 'string' || !decoded.hasOwnProperty('user'))
+    return res.status(400).json({ message: 'Failed to decode refreshToken.' })
+  // should query a database to return todos list and user info
+  const data = {
+    user: decoded.user,
+    todos: [
+      { title: 'item1', content: Date.now() },
+      { title: 'item2', content: Date.now() },
+      { title: 'item3', content: Date.now() }
+    ]
+  }
+  return res.status(200).json(data)
+}
+
