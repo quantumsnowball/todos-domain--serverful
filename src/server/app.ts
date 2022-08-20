@@ -1,14 +1,20 @@
 import express, { Request, Response } from 'express'
 import history from 'connect-history-api-fallback'
 import {
-  checkAccessToken,
   checkIfUserAlreadyExists,
   registerUserToDatabase,
+} from './middleware/register'
+import {
   checkUserEmailPassword,
-  signToken,
+  signToken
+} from './middleware/login'
+import {
   checkRefreshToken,
   renewToken
-} from './middleware/auth'
+} from './middleware/renew'
+import {
+  checkAccessToken
+} from './middleware/resources'
 import cookieParser from 'cookie-parser'
 
 
