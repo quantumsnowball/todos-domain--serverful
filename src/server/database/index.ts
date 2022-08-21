@@ -1,7 +1,7 @@
 import crypto from 'crypto'
 import dotenv from 'dotenv'
 import { MongoClient, Collection } from 'mongodb'
-import { MongoOperation, User, UserWithPassword } from '../types'
+import { MongoOperation, Todo, User, UserWithPassword } from '../types'
 
 
 // env
@@ -71,8 +71,16 @@ const findUser = operation(
   }
 )
 
+// insert todo
+const insertTodo = operation(
+  async (collection: Collection, filter: Todo) => {
+    await collection.insertOne(filter)
+  }
+)
+
 export default {
   test,
   insertUser,
-  findUser
+  findUser,
+  insertTodo
 }

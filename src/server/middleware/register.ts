@@ -9,6 +9,7 @@ dotenv.config()
 
 const DATABASE = process.env.DATABASE
 const USERS_COLLECTION = process.env.USERS_COLLECTION
+const TODOS_COLLECTION = process.env.TODOS_COLLECTION
 
 
 export const checkIfUserAlreadyExists: RequestHandler = async (req, res, next) => {
@@ -21,6 +22,15 @@ export const checkIfUserAlreadyExists: RequestHandler = async (req, res, next) =
     })
   }
   // all checks passed
+  next()
+}
+
+export const addNewUserSampleData: RequestHandler = async (req, res, next) => {
+  const email = req.body.email
+  // when a new user is registered give
+  await db.insertTodo(DATABASE, TODOS_COLLECTION, {
+    user: email, title: `Hello ${email}`, content: `Hi! This is your first task.`
+  })
   next()
 }
 

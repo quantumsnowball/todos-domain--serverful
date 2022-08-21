@@ -1,6 +1,7 @@
 import express, { Request, Response } from 'express'
 import history from 'connect-history-api-fallback'
 import {
+  addNewUserSampleData,
   checkIfUserAlreadyExists,
   registerUserToDatabase,
 } from './middleware/register'
@@ -49,6 +50,7 @@ api.post('/todos',
 
 api.post('/register',
   checkIfUserAlreadyExists,
+  addNewUserSampleData,
   registerUserToDatabase
 )
 
