@@ -6,7 +6,9 @@ import {
 import { useNavigate } from 'react-router-dom'
 import { useState } from "react"
 import { Todo } from "../../../../../types"
-import { addTodos } from "../../../../utils/fetch"
+import { addTodos, renewToken } from "../../../../utils/fetch"
+import { useSelector } from "react-redux"
+import { RootState } from "../../../../redux/store"
 
 
 const Div = styled('div')`
@@ -14,6 +16,7 @@ const Div = styled('div')`
 `
 
 export default function TodoCreater() {
+  const refreshToken = useSelector((s: RootState) => s.token.refreshToken)
   const [todoDraft, setTodoDraft] = useState('')
   const navigate = useNavigate()
 
@@ -24,7 +27,15 @@ export default function TodoCreater() {
 
     // access token is invalid
     if (addResult.status === 401) {
-      navigate('/login')
+      console.log(addResult.message)
+      const renewResult = await renewToken(refreshToken)
+      if (renewResult.status === 200) {
+        // trigger fetchTodos() to run again to get the todos list
+        await onAddTodo()
+      } else {
+        // renew from server failed, need a new refresh token, navigate to /login
+        navigate('/login')
+      }
       return
     }
 

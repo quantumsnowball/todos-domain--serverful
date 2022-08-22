@@ -21,7 +21,6 @@ const TodosDiv = styled('div')`
 
 export default function Homepage() {
   const refreshToken = useSelector((s: RootState) => s.token.refreshToken)
-  const [tokenHasUpdated, setTokenHasUpdated] = useState(0)
   const [todos, setTodos] = useState<Todo[]>([])
   const navigate = useNavigate()
 
@@ -58,7 +57,7 @@ export default function Homepage() {
     <>
       {refreshToken ?
         <TodosDiv>
-          <TodoCreator {...{ setTokenHasUpdated }} />
+          <TodoCreator />
           {todos.map((todo: Todo) => <div key={v4()}>{todo.title}: {todo.content}</div>)}
         </TodosDiv>
         :
