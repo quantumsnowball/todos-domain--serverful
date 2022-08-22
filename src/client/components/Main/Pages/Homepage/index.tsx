@@ -13,6 +13,7 @@ import {
 } from '@mui/material'
 import { useDispatch } from 'react-redux'
 import { contentActions } from '../../../../redux/slices/contentSlice'
+import TodoCard from './TodoCard'
 
 
 const TodosDiv = styled('div')`
@@ -61,7 +62,7 @@ export default function Homepage() {
       {refreshToken ?
         <TodosDiv>
           <TodoCreator />
-          {todos.map((todo: Todo) => <div key={v4()}>{todo.title}: {todo.content}</div>)}
+          {todos.map((todo: Todo) => <TodoCard key={v4()} {...todo} />)}
         </TodosDiv>
         :
         <Typography variant="h5" sx={{ textAlign: 'center' }}>
