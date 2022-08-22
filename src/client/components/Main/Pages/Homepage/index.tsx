@@ -33,7 +33,7 @@ export default function Homepage() {
         const body = await res.json()
         console.log(body)
         const renewResult = await renewToken(body.url, refreshToken)
-        if (renewResult) {
+        if (renewResult.status === 200) {
           // trigger fetchTodos() to run again to get the todos list
           setTokenHasUpdated(Date.now())
         } else {
