@@ -22,7 +22,7 @@ const TodosDiv = styled('div')`
 export default function Homepage() {
   const refreshToken = useSelector((s: RootState) => s.token.refreshToken)
   const [tokenHasUpdated, setTokenHasUpdated] = useState(0)
-  const [todos, setTodos] = useState<Todo[]>([{ title: 'item0', content: 'item0' }])
+  const [todos, setTodos] = useState<Todo[]>([])
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -34,7 +34,7 @@ export default function Homepage() {
         const renewResult = await renewToken(refreshToken)
         if (renewResult.status === 200) {
           // trigger fetchTodos() to run again to get the todos list
-          setTokenHasUpdated(Date.now())
+          await fetchTodos()
         } else {
           // renew from server failed, need a new refresh token, navigate to /login
           navigate('/login')
@@ -52,13 +52,13 @@ export default function Homepage() {
         setTodos(todos)
     }
     fetchTodos()
-  }, [tokenHasUpdated])
+  }, [])
 
   return (
     <>
       {refreshToken ?
         <TodosDiv>
-          <TodoCreator />
+          <TodoCreator {...{ setTokenHasUpdated }} />
           {todos.map((todo: Todo) => <div key={v4()}>{todo.title}: {todo.content}</div>)}
         </TodosDiv>
         :
