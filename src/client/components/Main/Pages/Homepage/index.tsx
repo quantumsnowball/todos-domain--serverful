@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { Todo } from '../../../../../types'
 import { useState, useEffect } from 'react'
 import TodoCreator from './TodoCreater'
-import { renewToken } from '../../../../utils/fetch'
+import { getTodos, renewToken } from '../../../../utils/fetch'
 import {
   styled,
   Typography
@@ -26,12 +26,11 @@ export default function Homepage() {
 
   useEffect(() => {
     const fetchTodos = async () => {
-      const res = await fetch('/api/todos', { method: 'POST' })
+      const todosResult = await getTodos()
       // access token is invalid
-      if (res.status === 401) {
-        const body = await res.json()
-        console.log(body)
-        const renewResult = await renewToken(body.url, refreshToken)
+      if (todosResult.status === 401) {
+        console.log(todosResult.message)
+        const renewResult = await renewToken(refreshToken)
         if (renewResult.status === 200) {
           // trigger fetchTodos() to run again to get the todos list
           setTokenHasUpdated(Date.now())
@@ -42,13 +41,14 @@ export default function Homepage() {
         return
       }
       // access token is valid, but failed to read todo for other reasons
-      if (res.status !== 200) {
-        console.log(await res.json())
+      if (todosResult.status !== 200) {
+        console.log(todosResult.message)
         return
       }
       // successfully fetch todos list 
-      const todos = await res.json()
-      setTodos(todos)
+      const todos = todosResult.payload
+      if (todos)
+        setTodos(todos)
     }
     fetchTodos()
   }, [tokenHasUpdated])

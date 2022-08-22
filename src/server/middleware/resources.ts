@@ -39,7 +39,7 @@ export const fetchTodos: RequestHandler = async (req, res) => {
   const user = decoded.user
   const filter = { user }
   const todos = await db.findTodos(DATABASE, TODOS_COLLECTION, filter)
-  return res.status(200).json({ user, todos })
+  return res.status(200).json({ payload: todos })
 }
 
 export const insertTodo: RequestHandler = async (req, res) => {
