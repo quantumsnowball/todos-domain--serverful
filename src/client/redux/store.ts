@@ -6,11 +6,13 @@ import {
 } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 import { tokenReducer } from './slices/tokenSlice'
+import { contentReducer } from './slices/contentSlice'
 
 
 // reducers
 const rootReducer = combineReducers({
   token: tokenReducer,
+  content: contentReducer
 })
 
 // store

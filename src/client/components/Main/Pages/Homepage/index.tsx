@@ -11,6 +11,8 @@ import {
   styled,
   Typography
 } from '@mui/material'
+import { useDispatch } from 'react-redux'
+import { contentActions } from '../../../../redux/slices/contentSlice'
 
 
 const TodosDiv = styled('div')`
@@ -21,7 +23,8 @@ const TodosDiv = styled('div')`
 
 export default function Homepage() {
   const refreshToken = useSelector((s: RootState) => s.token.refreshToken)
-  const [todos, setTodos] = useState<Todo[]>([])
+  const todos = useSelector((s: RootState) => s.content.todos)
+  const dispatch = useDispatch()
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -48,7 +51,7 @@ export default function Homepage() {
       // successfully fetch todos list 
       const todos = getResult.payload
       if (todos)
-        setTodos(todos)
+        dispatch(contentActions.setTodos(todos))
     }
     fetchTodos()
   }, [])
