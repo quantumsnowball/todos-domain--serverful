@@ -1,9 +1,8 @@
-import { v4 } from 'uuid'
 import { Link } from 'react-router-dom'
 import { RootState } from '../../../../redux/store'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { Todo } from '../../../../../types'
+import { Todo, TodoWithId } from '../../../../../types'
 import { useEffect } from 'react'
 import TodoCreator from './TodoCreater'
 import { getTodos, renewToken } from '../../../../utils/fetch'
@@ -74,7 +73,7 @@ export default function Homepage() {
         <ScrollableDiv className='todos-ctn'>
           <TodosDiv>
             <TodoCreator />
-            {todos.map((todo: Todo) => <TodoCard key={v4()} {...todo} />)}
+            {todos.map((todo: TodoWithId) => <TodoCard key={todo._id} {...todo} />)}
           </TodosDiv>
         </ScrollableDiv>
         :

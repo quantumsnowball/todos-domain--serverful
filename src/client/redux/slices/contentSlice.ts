@@ -1,14 +1,14 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { Todo } from '../../../types'
+import { TodoWithId } from '../../../types'
 
 
 const contentSlice = createSlice({
   name: 'content',
   initialState: {
-    todos: [] as Todo[],
+    todos: [] as TodoWithId[],
   },
   reducers: {
-    setTodos: (s, a: PayloadAction<Todo[]>) => {
+    setTodos: (s, a: PayloadAction<TodoWithId[]>) => {
       s.todos = a.payload
     },
   }
