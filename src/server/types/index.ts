@@ -13,10 +13,12 @@ export interface UserFilter {
   user: string
 }
 
-export interface Todo extends UserFilter {
+export interface Todo {
   title: string,
   content: string
 }
+
+export type TodoDocument = UserFilter & Todo
 
 export interface TokenPayload extends UserFilter {
   id: number,

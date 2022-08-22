@@ -2,6 +2,7 @@ import jwt, { TokenExpiredError } from 'jsonwebtoken'
 import { RequestHandler } from 'express'
 import db from '../database'
 import dotenv from 'dotenv'
+import { TodoDocument } from '../types'
 
 
 dotenv.config()
@@ -29,7 +30,6 @@ export const checkAccessToken: RequestHandler = (req, res, next) => {
   }
 }
 
-
 export const fetchTodos: RequestHandler = async (req, res) => {
   // decode to get back user infos
   const decoded = jwt.decode(req.cookies.accessToken)
@@ -40,5 +40,19 @@ export const fetchTodos: RequestHandler = async (req, res) => {
   const filter = { user }
   const todos = await db.findTodos(DATABASE, TODOS_COLLECTION, filter)
   return res.status(200).json({ user, todos })
+}
+
+export const insertTodo: RequestHandler = async (req, res) => {
+  // decode to get back user infos
+  const decoded = jwt.decode(req.cookies.accessToken)
+  if (typeof decoded === 'string' || !decoded.hasOwnProperty('user'))
+    return res.status(400).json({ message: 'Failed to decode refreshToken.' })
+  // add a new entry to database
+  const user = decoded.user
+  const todo = req.body
+  const doc: TodoDocument = { user, ...todo }
+  console.log(doc)
+  await db.insertTodo(DATABASE, TODOS_COLLECTION, doc)
+  return res.status(200).json({ message: 'TodoDocument insert successfully.' })
 }
 

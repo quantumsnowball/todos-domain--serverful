@@ -15,7 +15,8 @@ import {
 } from './middleware/renew'
 import {
   checkAccessToken,
-  fetchTodos
+  fetchTodos,
+  insertTodo
 } from './middleware/resources'
 import cookieParser from 'cookie-parser'
 
@@ -46,6 +47,11 @@ api.route('/hello').get((_: Request, res: Response) => {
 api.post('/todos',
   checkAccessToken,
   fetchTodos
+)
+
+api.put('/todos',
+  checkAccessToken,
+  insertTodo
 )
 
 api.post('/register',
