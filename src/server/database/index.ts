@@ -1,7 +1,7 @@
 import crypto from 'crypto'
 import dotenv from 'dotenv'
 import { MongoClient, Collection } from 'mongodb'
-import { MongoOperation, Todo, User, UserWithPassword } from '../types'
+import { MongoOperation, Todo, User, UserFilter, UserWithPassword } from '../types'
 
 
 // env
@@ -78,9 +78,19 @@ const insertTodo = operation(
   }
 )
 
+// find todo
+const findTodos = operation(
+  async (collection: Collection, filter: UserFilter) => {
+    const cursor = collection.find<User>(filter, { projection: { title: 1, content: 1 } })
+    const found = await cursor.toArray()
+    return found
+  }
+)
+
 export default {
   test,
   insertUser,
   findUser,
-  insertTodo
+  insertTodo,
+  findTodos
 }
