@@ -4,7 +4,7 @@ import { RootState } from '../../../../redux/store'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { Todo } from '../../../../../types'
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import TodoCreator from './TodoCreater'
 import { getTodos, renewToken } from '../../../../utils/fetch'
 import {

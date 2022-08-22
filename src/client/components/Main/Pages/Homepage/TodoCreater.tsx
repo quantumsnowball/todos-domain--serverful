@@ -7,8 +7,9 @@ import { useNavigate } from 'react-router-dom'
 import { useState } from "react"
 import { Todo } from "../../../../../types"
 import { addTodos, renewToken } from "../../../../utils/fetch"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../../../../redux/store"
+import { contentActions } from "../../../../redux/slices/contentSlice"
 
 
 const Div = styled('div')`
@@ -18,6 +19,7 @@ const Div = styled('div')`
 export default function TodoCreater() {
   const refreshToken = useSelector((s: RootState) => s.token.refreshToken)
   const [todoDraft, setTodoDraft] = useState('')
+  const dispatch = useDispatch()
   const navigate = useNavigate()
 
   const onAddTodo = async () => {
@@ -46,6 +48,9 @@ export default function TodoCreater() {
     }
 
     // add result successful, trigger page refresh
+    const todos = addResult.payload
+    if (todos)
+      dispatch(contentActions.setTodos(todos))
   }
 
   return (

@@ -53,6 +53,9 @@ export const insertTodo: RequestHandler = async (req, res) => {
   const doc: TodoDocument = { user, ...todo }
   console.log(doc)
   await db.insertTodo(DATABASE, TODOS_COLLECTION, doc)
-  return res.status(200).json({ message: 'TodoDocument insert successfully.' })
+  // query database for the updated list
+  const filter = { user }
+  const todos = await db.findTodos(DATABASE, TODOS_COLLECTION, filter)
+  return res.status(200).json({ payload: todos })
 }
 

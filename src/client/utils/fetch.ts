@@ -28,7 +28,7 @@ export const getTodos = async (): Promise<FetchResult<Todo[]>> => {
   return { status, message, payload }
 }
 
-export const addTodos = async (todo: Todo): Promise<FetchResult> => {
+export const addTodos = async (todo: Todo): Promise<FetchResult<Todo[]>> => {
   const res = await fetch('/api/todos', {
     method: 'PUT',
     headers: { "Content-Type": "application/json" },
@@ -38,7 +38,8 @@ export const addTodos = async (todo: Todo): Promise<FetchResult> => {
 
   const status = res.status
   const message = body.message
+  const payload = status === 200 ? body.payload : undefined
 
-  return { status, message }
+  return { status, message, payload }
 }
 
