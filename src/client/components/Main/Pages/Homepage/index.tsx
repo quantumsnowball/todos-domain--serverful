@@ -27,10 +27,10 @@ export default function Homepage() {
 
   useEffect(() => {
     const fetchTodos = async () => {
-      const todosResult = await getTodos()
+      const getResult = await getTodos()
       // access token is invalid
-      if (todosResult.status === 401) {
-        console.log(todosResult.message)
+      if (getResult.status === 401) {
+        console.log(getResult.message)
         const renewResult = await renewToken(refreshToken)
         if (renewResult.status === 200) {
           // trigger fetchTodos() to run again to get the todos list
@@ -42,12 +42,12 @@ export default function Homepage() {
         return
       }
       // access token is valid, but failed to read todo for other reasons
-      if (todosResult.status !== 200) {
-        console.log(todosResult.message)
+      if (getResult.status !== 200) {
+        console.log(getResult.message)
         return
       }
       // successfully fetch todos list 
-      const todos = todosResult.payload
+      const todos = getResult.payload
       if (todos)
         setTodos(todos)
     }
