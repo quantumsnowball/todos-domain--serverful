@@ -4,21 +4,13 @@ import { Link } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { tokenActions } from '../../../redux/slices/tokenSlice'
+import { CenterContent, Stretch } from '../../styled/containers'
 
 
-const Div = styled('div')`
+const Div = styled(Stretch(CenterContent('div')))`
   /* layout */
   width: 30vw;
   height: 35vh;
-  /* self */
-  align-self: center;
-  flex-grow: 1;
-  /* items */
-  display: flex;
-  flex-flow: column nowrap;
-  justify-content: center;
-  align-item: flex-start;
-  align-content: center;
 `
 
 export default function Login() {

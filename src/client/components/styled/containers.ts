@@ -11,14 +11,16 @@ type Styler = (e: Element) => Element
 export const Stretch: Styler = e => styled(e)`
   /* take all vertical flex space from parents */
   flex-grow: 1;
-`
+`;
 
 export const CenterContent: Styler = e => styled(e)`
+  /* self */
+  align-self: center;
+  /* children */
   display: flex;
   flex-flow: column nowrap;
   justify-content: center;
   align-content: center;
   text-align: center;
-`
-
+`;
 

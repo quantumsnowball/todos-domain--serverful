@@ -3,18 +3,14 @@ import MenuBar from './MenuBar'
 import Main from './Main'
 import { createTheme, styled, ThemeProvider } from '@mui/material'
 import chooseTheme from '../styles/theme'
+import { CenterContent } from './styled/containers'
 import { BrowserRouter } from 'react-router-dom'
 
 
-const FlexColumnDiv = styled('div')`
+const FlexColumnDiv = styled(CenterContent('div'))`
   /* cover full viewport */
   /* width: 100vw; */
   height: 100vh;
-  /* flex column display sections */
-  display: flex;
-  flex-flow: column nowrap;
-  justify-content: space-between;
-  align-items: stretch;
   /* theme */
   color: ${props => props.theme.palette.text.primary};
   background-color: ${props => props.theme.palette.background.default};

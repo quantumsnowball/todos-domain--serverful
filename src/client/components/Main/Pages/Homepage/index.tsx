@@ -14,13 +14,24 @@ import {
 import { useDispatch } from 'react-redux'
 import { contentActions } from '../../../../redux/slices/contentSlice'
 import TodoCard from './TodoCard'
+import { CenterContent, Stretch } from '../../../styled/containers'
 
 
-const TodosDiv = styled('div')`
+const ScrollableDiv = styled(Stretch(CenterContent('div')))`
+  /* allow scrollbar here*/
+  overflow: auto;
+  /* text */
+  text-align: left;
+`
+
+const TodosDiv = styled(Stretch('div'))`
   width: 100%;
-  flex-grow: 1;
   align-self: center;
 `
+
+const LoggedOutDiv = Stretch(CenterContent(styled('div')`
+  width: 100%;
+`))
 
 export default function Homepage() {
   const refreshToken = useSelector((s: RootState) => s.token.refreshToken)
@@ -60,14 +71,19 @@ export default function Homepage() {
   return (
     <>
       {refreshToken ?
-        <TodosDiv>
-          <TodoCreator />
-          {todos.map((todo: Todo) => <TodoCard key={v4()} {...todo} />)}
-        </TodosDiv>
+        <ScrollableDiv className='todos-ctn'>
+          <TodosDiv>
+            <TodoCreator />
+            {todos.map((todo: Todo) => <TodoCard key={v4()} {...todo} />)}
+          </TodosDiv>
+        </ScrollableDiv>
         :
-        <Typography variant="h5" sx={{ textAlign: 'center' }}>
-          Please <Link to="/login">Login</Link> to view your Todo list.
-        </Typography>}
+        <LoggedOutDiv>
+          <Typography variant="h5">
+            Please <Link to="/login">Login</Link> to view your Todo list.
+          </Typography>
+        </LoggedOutDiv>
+      }
     </>
   )
 }

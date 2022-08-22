@@ -1,21 +1,13 @@
 import { Button, FormControl, styled, TextField, Typography } from '@mui/material'
 import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { CenterContent, Stretch } from '../../styled/containers'
 
 
-const Div = styled('div')`
+const Div = styled(Stretch(CenterContent('div')))`
   /* layout */
   width: 30vw;
   height: 35vh;
-  /* self */
-  align-self: center;
-  flex-grow: 1;
-  /* items */
-  display: flex;
-  flex-flow: column nowrap;
-  justify-content: center;
-  align-item: flex-start;
-  align-content: center;
 `
 
 export default function Register() {
