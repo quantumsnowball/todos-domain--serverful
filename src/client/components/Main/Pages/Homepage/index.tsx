@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { Todo } from '../../../../types'
 import { useState, useEffect } from 'react'
 import TodoCreator from './TodoCreater'
+import { renewToken } from '../../../../utils/fetch'
 import {
   styled,
   Typography
@@ -24,20 +25,6 @@ export default function Homepage() {
   const [todos, setTodos] = useState<Todo[]>([{ title: 'item0', content: 'item0' }])
   const navigate = useNavigate()
 
-  const renewToken = async (url: string) => {
-    const res = await fetch(url, {
-      method: 'POST',
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ refreshToken })
-    })
-    if (res.status === 200) {
-      return true
-    } else {
-      console.log(await res.json())
-      return false
-    }
-  }
-
   useEffect(() => {
     const fetchTodos = async () => {
       const res = await fetch('/api/todos', { method: 'POST' })
@@ -45,7 +32,7 @@ export default function Homepage() {
       if (res.status === 401) {
         const body = await res.json()
         console.log(body)
-        const renewResult = await renewToken(body.url)
+        const renewResult = await renewToken(body.url, refreshToken)
         if (renewResult) {
           // trigger fetchTodos() to run again to get the todos list
           setTokenHasUpdated(Date.now())
