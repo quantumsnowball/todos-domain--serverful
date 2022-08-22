@@ -6,6 +6,7 @@ import {
 import { useNavigate } from 'react-router-dom'
 import { useState } from "react"
 import { Todo } from "../../../../../types"
+import { addTodos } from "../../../../utils/fetch"
 
 
 const Div = styled('div')`
@@ -19,23 +20,21 @@ export default function TodoCreater() {
   const onAddTodo = async () => {
     const title = todoDraft
     const todo: Todo = { title, content: '' }
-    const res = await fetch('/api/todos', {
-      method: 'PUT',
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(todo)
-    })
+    const addResult = await addTodos(todo)
+
     // access token is invalid
-    if (res.status === 401) {
+    if (addResult.status === 401) {
       navigate('/login')
       return
     }
 
-    if (res.status !== 200) {
-      console.log(await res.json())
+    // access token is valid, but failed to add todo for other reasons
+    if (addResult.status !== 200) {
+      console.log(addResult.message)
       return
     }
 
-    console.log(await res.json())
+    // add result successful, trigger page refresh
   }
 
   return (

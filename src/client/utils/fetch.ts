@@ -27,3 +27,18 @@ export const getTodos = async (): Promise<FetchResult<Todo[]>> => {
 
   return { status, message, payload }
 }
+
+export const addTodos = async (todo: Todo): Promise<FetchResult> => {
+  const res = await fetch('/api/todos', {
+    method: 'PUT',
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(todo)
+  })
+  const body = await res.json()
+
+  const status = res.status
+  const message = body.message
+
+  return { status, message }
+}
+
