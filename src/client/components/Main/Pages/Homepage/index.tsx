@@ -1,3 +1,4 @@
+import { v4 } from 'uuid'
 import { Link } from 'react-router-dom'
 import { RootState } from '../../../../redux/store'
 import { useSelector } from 'react-redux'
@@ -58,7 +59,7 @@ export default function Homepage() {
       {refreshToken ?
         <TodosDiv>
           <TodoCreator />
-          {todos.map((todo: Todo) => <div key={todo.title}>{todo.title}: {todo.content}</div>)}
+          {todos.map((todo: Todo) => <div key={v4()}>{todo.title}: {todo.content}</div>)}
         </TodosDiv>
         :
         <Typography variant="h5" sx={{ textAlign: 'center' }}>
