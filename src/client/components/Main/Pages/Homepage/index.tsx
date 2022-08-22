@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom'
-import { RootState } from '../../../redux/store'
+import { RootState } from '../../../../redux/store'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { Todo } from '../../../types'
+import { Todo } from '../../../../types'
 import { useState, useEffect } from 'react'
 
 
