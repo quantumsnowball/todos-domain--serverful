@@ -1,6 +1,7 @@
 import crypto from 'crypto'
 import dotenv from 'dotenv'
-import { MongoClient, Collection } from 'mongodb'
+import { MongoClient, Collection, ObjectId } from 'mongodb'
+import { _Id } from '../../types'
 import { MongoOperation, TodoDocument, User, UserFilter, UserWithPassword } from '../types'
 
 
@@ -78,6 +79,13 @@ const insertTodo = operation(
   }
 )
 
+// delete todo
+const deleteTodo = operation(
+  async (collection: Collection, filter: _Id) => {
+    const result = await collection.deleteOne({ _id: new ObjectId(filter._id) })
+  }
+)
+
 // find todo
 const findTodos = operation(
   async (collection: Collection, filter: UserFilter) => {
@@ -92,5 +100,6 @@ export default {
   insertUser,
   findUser,
   insertTodo,
+  deleteTodo,
   findTodos
 }

@@ -16,7 +16,8 @@ import {
 import {
   checkAccessToken,
   fetchTodos,
-  insertTodo
+  insertTodo,
+  deleteTodo
 } from './middleware/resources'
 import cookieParser from 'cookie-parser'
 
@@ -52,6 +53,11 @@ api.post('/todos',
 api.put('/todos',
   checkAccessToken,
   insertTodo
+)
+
+api.delete('/todos',
+  checkAccessToken,
+  deleteTodo
 )
 
 api.post('/register',

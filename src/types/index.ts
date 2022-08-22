@@ -3,6 +3,9 @@ export interface Todo {
   content: string
 }
 
-export interface TodoWithId extends Todo {
+export interface _Id {
   _id: string
 }
+
+export type TodoWithId = Todo & _Id
+
