@@ -1,4 +1,5 @@
 import { Collection } from 'mongodb'
+import { Todo } from '../../types'
 
 
 export interface User {
@@ -11,11 +12,6 @@ export interface UserWithPassword extends User {
 
 export interface UserFilter {
   user: string
-}
-
-export interface Todo {
-  title: string,
-  content: string
 }
 
 export type TodoDocument = UserFilter & Todo

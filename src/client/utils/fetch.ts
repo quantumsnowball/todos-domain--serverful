@@ -1,5 +1,6 @@
-import { Todo, Token } from "../types"
-import { FetchResult } from '../../types'
+import { Todo } from '../../types'
+import { Token } from '../types'
+import { FetchResult } from '../types'
 
 
 export const renewToken = async (url: string, refreshToken: Token): Promise<FetchResult> => {

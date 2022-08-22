@@ -1,6 +1,5 @@
-export interface FetchResult<T = null> {
-  status: number,
-  message?: string,
-  payload?: T
+export interface Todo {
+  title: string,
+  content: string
 }
 

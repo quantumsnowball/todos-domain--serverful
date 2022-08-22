@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import { RootState } from '../../../../redux/store'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { Todo } from '../../../../types'
+import { Todo } from '../../../../../types'
 import { useState, useEffect } from 'react'
 import TodoCreator from './TodoCreater'
 import { renewToken } from '../../../../utils/fetch'
@@ -21,7 +21,6 @@ const TodosDiv = styled('div')`
 export default function Homepage() {
   const refreshToken = useSelector((s: RootState) => s.token.refreshToken)
   const [tokenHasUpdated, setTokenHasUpdated] = useState(0)
-  const [todosUser, setTodosUser] = useState('')
   const [todos, setTodos] = useState<Todo[]>([{ title: 'item0', content: 'item0' }])
   const navigate = useNavigate()
 
@@ -48,8 +47,7 @@ export default function Homepage() {
         return
       }
       // successfully fetch todos list 
-      const { user, todos } = await res.json()
-      setTodosUser(user)
+      const todos = await res.json()
       setTodos(todos)
     }
     fetchTodos()
@@ -60,7 +58,6 @@ export default function Homepage() {
       {refreshToken ?
         <TodosDiv>
           <TodoCreator />
-          <h3>Todos for {todosUser}:</h3>
           {todos.map((todo: Todo) => <div key={todo.title}>{todo.title}: {todo.content}</div>)}
         </TodosDiv>
         :

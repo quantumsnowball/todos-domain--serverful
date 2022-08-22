@@ -5,7 +5,7 @@ import {
 } from "@mui/material"
 import { useNavigate } from 'react-router-dom'
 import { useState } from "react"
-import { Todo } from "../../../../types"
+import { Todo } from "../../../../../types"
 
 
 const Div = styled('div')`
