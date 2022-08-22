@@ -12,6 +12,8 @@ const Div = styled('div')`
   max-width: 40vw;
   height: 35vh;
   max-height: 40vh;
+  /* self */
+  align-self: center;
   /* items */
   display: flex;
   flex-flow: column nowrap;
@@ -52,7 +54,7 @@ export default function Login() {
   }
 
   return (
-    <Div>
+    <Div className="login-ctn">
       <Typography
         variant="h4"
         sx={{ textAlign: 'center' }}

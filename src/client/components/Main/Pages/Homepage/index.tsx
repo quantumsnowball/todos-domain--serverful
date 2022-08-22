@@ -4,7 +4,18 @@ import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { Todo } from '../../../../types'
 import { useState, useEffect } from 'react'
+import TodoCreator from './TodoCreater'
+import {
+  styled,
+  Typography
+} from '@mui/material'
 
+
+const TodosDiv = styled('div')`
+  width: 100%;
+  flex-grow: 1;
+  align-self: center;
+`
 
 export default function Homepage() {
   const refreshToken = useSelector((s: RootState) => s.token.refreshToken)
@@ -58,15 +69,18 @@ export default function Homepage() {
   }, [tokenHasUpdated])
 
   return (
-    <div>
+    <>
       {refreshToken ?
-        <>
+        <TodosDiv>
+          <TodoCreator />
           <h3>Todos for {todosUser}:</h3>
           {todos.map((todo: Todo) => <div key={todo.title}>{todo.title}: {todo.content}</div>)}
-        </>
+        </TodosDiv>
         :
-        <h1>Please <Link to="/login">Login</Link> to view your Todo list. </h1>}
-    </div>
+        <Typography variant="h5" sx={{ textAlign: 'center' }}>
+          Please <Link to="/login">Login</Link> to view your Todo list.
+        </Typography>}
+    </>
   )
 }
 

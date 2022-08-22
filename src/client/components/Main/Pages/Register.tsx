@@ -9,6 +9,8 @@ const Div = styled('div')`
   max-width: 40vw;
   height: 35vh;
   max-height: 40vh;
+  /* self */
+  align-self: center;
   /* items */
   display: flex;
   flex-flow: column nowrap;

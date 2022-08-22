@@ -8,7 +8,11 @@ import { styled } from '@mui/material'
 
 // .main-ctn
 const CenteredDiv = styled('div')`
-  /* take all flex space from parents */
+  /* padding */
+  padding: 15px;
+  /* take all horizontal space */
+  width: 100%;
+  /* take all vertical flex space from parents */
   flex-grow: 1;
   /* flex column display all quote cards */
   display: flex;
