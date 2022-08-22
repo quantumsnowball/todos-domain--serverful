@@ -9,15 +9,14 @@ import { tokenActions } from '../../../redux/slices/tokenSlice'
 const Div = styled('div')`
   /* layout */
   width: 30vw;
-  max-width: 40vw;
   height: 35vh;
-  max-height: 40vh;
   /* self */
   align-self: center;
+  flex-grow: 1;
   /* items */
   display: flex;
   flex-flow: column nowrap;
-  justify-content: space-between;
+  justify-content: center;
   align-item: flex-start;
   align-content: center;
 `

@@ -8,20 +8,20 @@ import { BrowserRouter } from 'react-router-dom'
 
 const FlexColumnDiv = styled('div')`
   /* cover full viewport */
-  width: 100vw;
+  /* width: 100vw; */
   height: 100vh;
   /* flex column display sections */
   display: flex;
   flex-flow: column nowrap;
   justify-content: space-between;
-  align-items: center;
+  align-items: stretch;
   /* theme */
   color: ${props => props.theme.palette.text.primary};
   background-color: ${props => props.theme.palette.background.default};
 `
 
 function App() {
-  const mode = 'light'
+  const mode = 'dark'
   const name = 'elementary'
   const theme = useCallback(() => createTheme(chooseTheme(name)(mode)), [name, mode])
 
