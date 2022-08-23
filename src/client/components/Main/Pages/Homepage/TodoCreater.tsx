@@ -24,6 +24,10 @@ export default function TodoCreater() {
 
   const onAddTodo = async () => {
     const title = todoDraft
+
+    if (title.length === 0)
+      return
+
     const todo: Todo = { title, content: '' }
     const addResult = await addTodos(todo)
 
