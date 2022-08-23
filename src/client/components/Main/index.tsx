@@ -3,14 +3,12 @@ import Homepage from './Pages/Homepage'
 import Register from './Pages/Register'
 import Login from './Pages/Login'
 import NotFound from './Pages/NotFound'
-import { Stretch, CenterContent } from '../styled/containers'
+import { Stretch, CenterContent, Overflow } from '../styled/containers'
 import { styled } from '@mui/material'
 
 
 // .main-ctn
-const CenteredDiv = styled(Stretch(CenterContent('div')))`
-  /* take all horizontal space */
-  width: 100%;
+const CenteredDiv = styled(Overflow(Stretch(CenterContent('div'))))`
 `
 
 export default function Main() {

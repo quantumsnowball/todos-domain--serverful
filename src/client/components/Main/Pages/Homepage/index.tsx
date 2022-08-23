@@ -13,24 +13,20 @@ import {
 import { useDispatch } from 'react-redux'
 import { contentActions } from '../../../../redux/slices/contentSlice'
 import TodoCard from './TodoCard'
-import { CenterContent, Stretch } from '../../../styled/containers'
+import { CenterContent, Stretch, Overflow } from '../../../styled/containers'
 
 
-const ScrollableDiv = styled(Stretch(CenterContent('div')))`
-  /* allow scrollbar here*/
-  overflow: auto;
+const TodosDiv = styled(Overflow(Stretch(CenterContent('div'))))`
+`
+
+const TodosContentDiv = styled(Overflow(Stretch(CenterContent('div'))))`
+  justify-content: flex-start;
   /* text */
   text-align: left;
-`
+`;
 
-const TodosDiv = styled(Stretch('div'))`
-  width: 100%;
-  align-self: center;
-`
-
-const LoggedOutDiv = Stretch(CenterContent(styled('div')`
-  width: 100%;
-`))
+const LoggedOutDiv = styled(Stretch(CenterContent('div')))`
+`;
 
 export default function Homepage() {
   const refreshToken = useSelector((s: RootState) => s.token.refreshToken)
@@ -70,12 +66,14 @@ export default function Homepage() {
   return (
     <>
       {refreshToken ?
-        <ScrollableDiv className='todos-ctn'>
-          <TodosDiv>
+        <>
+          <TodosDiv className='todos-ctn'>
+            <TodosContentDiv className='todosContent-ctn'>
+              {todos.map((todo: TodoWithId) => <TodoCard key={todo._id} {...todo} />)}
+            </TodosContentDiv>
             <TodoCreator />
-            {todos.map((todo: TodoWithId) => <TodoCard key={todo._id} {...todo} />)}
           </TodosDiv>
-        </ScrollableDiv>
+        </>
         :
         <LoggedOutDiv>
           <Typography variant="h5">

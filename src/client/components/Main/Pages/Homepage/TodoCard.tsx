@@ -8,12 +8,15 @@ import { useNavigate } from 'react-router-dom'
 import { deleteTodo, renewToken } from '../../../../utils/fetch'
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../../../../redux/store"
-import { Stretch } from '../../../styled/containers'
+import { Stretch, CenterContent } from '../../../styled/containers'
 import { contentActions } from "../../../../redux/slices/contentSlice"
 
 
-const FlexCard = styled(Card)`
+const FlexCard = styled((Card))`
   display: flex;
+  min-height: 3.5em;
+  margin: 5px;
+  padding: 5px;
 `
 
 const ContentDiv = Stretch('div')

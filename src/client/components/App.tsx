@@ -9,8 +9,9 @@ import { BrowserRouter } from 'react-router-dom'
 
 const FlexColumnDiv = styled(CenterContent('div'))`
   /* cover full viewport */
-  /* width: 100vw; */
   height: 100vh;
+  max-height: 100vh;
+  justify-content: space-between;
   /* theme */
   color: ${props => props.theme.palette.text.primary};
   background-color: ${props => props.theme.palette.background.default};
