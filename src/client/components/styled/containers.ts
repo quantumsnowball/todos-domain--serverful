@@ -27,7 +27,7 @@ export const CenterContent: Styler = e => styled(e)`
   flex-flow: column nowrap;
   justify-content: center;
   align-content: center;
-  align-item: stretch;
+  align-items: stretch;
   text-align: center;
 `;
 

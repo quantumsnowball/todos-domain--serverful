@@ -13,13 +13,14 @@ import { contentActions } from "../../../../redux/slices/contentSlice"
 
 
 const FlexCard = styled((Card))`
+  min-height: 100px;
   display: flex;
-  min-height: 3.5em;
   margin: 5px;
   padding: 5px;
 `
 
-const ContentDiv = Stretch('div')
+const ContentDiv = styled(Stretch('div'))`
+`
 
 interface TodoCardProps {
   _id: string
