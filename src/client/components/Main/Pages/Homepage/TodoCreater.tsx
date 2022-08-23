@@ -16,21 +16,25 @@ import { Stretch } from "../../../styled/containers"
 const Div = styled('div')`
   align-self: stretch;
   display: flex;
+  margin: 10px;
+  padding: 10px;
 `
 
 export default function TodoCreater() {
   const refreshToken = useSelector((s: RootState) => s.token.refreshToken)
-  const [todoDraft, setTodoDraft] = useState('')
+  const [titleDraft, setTitleDraft] = useState('')
+  const [contentDraft, setContentDraft] = useState('')
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
   const onAddTodo = async () => {
-    const title = todoDraft
+    const title = titleDraft
+    const content = contentDraft
 
     if (title.length === 0)
       return
 
-    const todo: Todo = { title, content: '' }
+    const todo: Todo = { title, content }
     const addResult = await addTodos(todo)
 
     // access token is invalid
@@ -62,9 +66,15 @@ export default function TodoCreater() {
   return (
     <Div>
       <TextField
-        value={todoDraft}
-        onChange={e => setTodoDraft(e.target.value)}
+        value={titleDraft}
+        label='Title'
+        onChange={e => setTitleDraft(e.target.value)}
         sx={{ flexGrow: 1 }} />
+      <TextField
+        value={contentDraft}
+        label='Content'
+        onChange={e => setContentDraft(e.target.value)}
+        sx={{ flexGrow: 2 }} />
       <Button variant="contained"
         onClick={onAddTodo}
       >ADD</Button>
