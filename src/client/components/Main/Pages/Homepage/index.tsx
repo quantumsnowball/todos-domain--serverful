@@ -17,6 +17,7 @@ import { CenterContent, Stretch, Overflow } from '../../../styled/containers'
 
 
 const TodosDiv = styled(Overflow(Stretch(CenterContent('div'))))`
+  max-width: 800px;
 `
 
 const TodosContentDiv = styled(Overflow(Stretch(CenterContent('div'))))`

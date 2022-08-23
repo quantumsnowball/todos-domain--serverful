@@ -10,10 +10,12 @@ import { addTodos, renewToken } from "../../../../utils/fetch"
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../../../../redux/store"
 import { contentActions } from "../../../../redux/slices/contentSlice"
+import { Stretch } from "../../../styled/containers"
 
 
 const Div = styled('div')`
   align-self: stretch;
+  display: flex;
 `
 
 export default function TodoCreater() {
@@ -61,7 +63,8 @@ export default function TodoCreater() {
     <Div>
       <TextField
         value={todoDraft}
-        onChange={e => setTodoDraft(e.target.value)} />
+        onChange={e => setTodoDraft(e.target.value)}
+        sx={{ flexGrow: 1 }} />
       <Button variant="contained"
         onClick={onAddTodo}
       >ADD</Button>
