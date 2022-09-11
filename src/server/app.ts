@@ -6,7 +6,12 @@ import {
   registerUserToDatabase,
 } from './middleware/register'
 import {
-  checkUserEmailPassword,
+  googleOAuth2
+} from './middleware/login/google'
+import {
+  checkUserEmailPassword
+} from './middleware/login/regular'
+import {
   signToken
 } from './middleware/login'
 import {
@@ -68,6 +73,11 @@ api.post('/register',
 
 api.post('/login',
   checkUserEmailPassword,
+  signToken
+)
+
+api.post('/login-google',
+  googleOAuth2,
   signToken
 )
 
