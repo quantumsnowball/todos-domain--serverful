@@ -95,6 +95,16 @@ export default function Login() {
       >
         Register
       </Button>
+      <Typography variant="h4">or</Typography>
+      <Button
+        variant="contained"
+        color="success"
+        sx={{ m: 1 }}
+        component={Link}
+        to="/login-google"
+      >
+        Login with Google
+      </Button>
     </Div>
   )
 }
