@@ -1,13 +1,13 @@
 import express, { Request, Response } from 'express'
 import history from 'connect-history-api-fallback'
+import passport from 'passport'
+import './middleware/passport'
+import cors from 'cors'
 import {
   addNewUserSampleData,
   checkIfUserAlreadyExists,
   registerUserToDatabase,
 } from './middleware/register'
-import {
-  googleOAuth2
-} from './middleware/login/google'
 import {
   checkUserEmailPassword
 } from './middleware/login/regular'
@@ -33,7 +33,13 @@ import cookieParser from 'cookie-parser'
 const app = express()
 const api = express.Router()
 // redirect all GET requests with subpaths to the default index.html
-app.use(history())
+// except /api endpoints
+app.use(history({
+  rewrites: [{
+    from: /^\/api\/.*$/,
+    to: context => context.parsedUrl.path
+  }]
+}))
 //
 // global middleware
 //
@@ -82,7 +88,12 @@ api.post('/login',
 )
 
 api.post('/login-google',
-  googleOAuth2,
+  passport.authenticate('google', { session: false }),
+  signToken
+)
+
+api.get('/login-google',
+  passport.authenticate('google', { session: false }),
   signToken
 )
 

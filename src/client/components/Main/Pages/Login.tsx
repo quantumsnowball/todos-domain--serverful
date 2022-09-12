@@ -96,15 +96,16 @@ export default function Login() {
         Register
       </Button>
       <Typography variant="h4">or</Typography>
-      <Button
-        variant="contained"
-        color="success"
-        sx={{ m: 1 }}
-        component={Link}
-        to="/login-google"
-      >
-        Login with Google
-      </Button>
+      <form action='/api/login-google' method='POST'>
+        <Button
+          variant="contained"
+          color="success"
+          sx={{ m: 1 }}
+          type='submit'
+        >
+          Login with Google
+        </Button>
+      </form>
     </Div>
   )
 }

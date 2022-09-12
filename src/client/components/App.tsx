@@ -18,7 +18,7 @@ const FlexColumnDiv = styled(CenterContent('div'))`
 `
 
 function App() {
-  const mode = 'dark'
+  const mode = 'light'
   const name = 'elementary'
   const theme = useCallback(() => createTheme(chooseTheme(name)(mode)), [name, mode])
 
