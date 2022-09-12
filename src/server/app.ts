@@ -27,11 +27,16 @@ import {
 import cookieParser from 'cookie-parser'
 
 
+//
 // routes
+//
 const app = express()
 const api = express.Router()
+// redirect all GET requests with subpaths to the default index.html
 app.use(history())
+//
 // global middleware
+//
 app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
 app.use(cookieParser())
