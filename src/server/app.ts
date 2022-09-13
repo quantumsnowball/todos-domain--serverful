@@ -11,8 +11,8 @@ import {
   checkUserEmailPassword
 } from './middleware/login/regular'
 import {
-  signAfterOAuth,
-  signToken
+  signAfterLogin,
+  signAfterOAuth
 } from './middleware/login'
 import {
   checkRefreshToken,
@@ -88,17 +88,12 @@ api.post('/register',
 
 api.post('/login',
   checkUserEmailPassword,
-  signToken
+  signAfterLogin
 )
 
 api.post('/login-google',
   passport.authenticate('google', { session: false }),
-  signToken
-)
-
-api.get('/login-google',
-  passport.authenticate('google', { session: false }),
-  signToken
+  signAfterOAuth
 )
 
 api.post('/renew',

@@ -14,15 +14,20 @@ const REFRESH_TOKEN_LIFETIME = process.env.REFRESH_TOKEN_LIFETIME
 export const tokens: string[] = []
 
 
-export const signToken: RequestHandler = async (req, res) => {
-  // sign token
-  const { email } = req.body
+const sign = (email: string) => {
   const payload: TokenPayload = { id: Date.now(), user: email }
   const accessToken = jwt.sign(
     { ...payload }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: ACCESS_TOKEN_LIFETIME })
   const refreshToken = jwt.sign(
     { ...payload }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: REFRESH_TOKEN_LIFETIME })
   tokens.push(refreshToken)
+  return { accessToken, refreshToken }
+}
+
+export const signAfterLogin: RequestHandler = async (req, res) => {
+  // sign token
+  const { email } = req.body
+  const { accessToken, refreshToken } = sign(email)
   return res
     .cookie('accessToken', accessToken, { httpOnly: true })
     .json({
@@ -31,16 +36,10 @@ export const signToken: RequestHandler = async (req, res) => {
     })
 }
 
-
 export const signAfterOAuth: RequestHandler = async (req, res) => {
   // sign token
   const { email } = req.body
-  const payload: TokenPayload = { id: Date.now(), user: email }
-  const accessToken = jwt.sign(
-    { ...payload }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: ACCESS_TOKEN_LIFETIME })
-  const refreshToken = jwt.sign(
-    { ...payload }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: REFRESH_TOKEN_LIFETIME })
-  tokens.push(refreshToken)
+  const { accessToken, refreshToken } = sign(email)
   return res
     .cookie('accessToken', accessToken, { httpOnly: true })
     .cookie('refreshToken', refreshToken)
