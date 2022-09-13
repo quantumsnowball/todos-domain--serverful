@@ -35,7 +35,6 @@ const app = express()
 // except /api endpoints
 app.use(history({
   rewrites: [
-    { from: /^\/callback\/.*$/, to: context => context.parsedUrl.path },
     { from: /^\/api\/.*$/, to: context => context.parsedUrl.path }
   ]
 }))
@@ -91,7 +90,7 @@ api.post('/login',
   signAfterLogin
 )
 
-api.post('/login-google',
+api.get('/login-google',
   passport.authenticate('google', { session: false }),
   signAfterOAuth
 )
@@ -102,25 +101,6 @@ api.post('/renew',
 )
 
 app.use('/api', api)
-
-//
-// - callback
-//
-const callback = express.Router()
-
-callback.route('/hello').get((_: Request, res: Response) => {
-  return res.send({
-    message: 'Hello World! Greeting from Express JS.'
-  })
-})
-
-callback.get('/login-google',
-  passport.authenticate('google', { session: false }),
-  signAfterOAuth
-)
-
-app.use('/callback', callback)
-
 
 //
 // export
