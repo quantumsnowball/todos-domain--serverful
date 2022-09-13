@@ -2,7 +2,6 @@ import express, { Request, Response } from 'express'
 import history from 'connect-history-api-fallback'
 import passport from 'passport'
 import './middleware/passport'
-import cors from 'cors'
 import {
   addNewUserSampleData,
   checkIfUserAlreadyExists,
@@ -12,6 +11,7 @@ import {
   checkUserEmailPassword
 } from './middleware/login/regular'
 import {
+  signAfterOAuth,
   signToken
 } from './middleware/login'
 import {
@@ -31,14 +31,13 @@ import cookieParser from 'cookie-parser'
 // routes
 //
 const app = express()
-const api = express.Router()
 // redirect all GET requests with subpaths to the default index.html
 // except /api endpoints
 app.use(history({
-  rewrites: [{
-    from: /^\/api\/.*$/,
-    to: context => context.parsedUrl.path
-  }]
+  rewrites: [
+    { from: /^\/callback\/.*$/, to: context => context.parsedUrl.path },
+    { from: /^\/api\/.*$/, to: context => context.parsedUrl.path }
+  ]
 }))
 //
 // global middleware
@@ -55,6 +54,11 @@ app.use(express.static('dist'))
 //
 // paths
 //
+//
+// - api
+//
+const api = express.Router()
+
 api.route('/hello').get((_: Request, res: Response) => {
   return res.send({
     message: 'Hello World! Greeting from Express JS.'
@@ -104,5 +108,26 @@ api.post('/renew',
 
 app.use('/api', api)
 
+//
+// - callback
+//
+const callback = express.Router()
 
+callback.route('/hello').get((_: Request, res: Response) => {
+  return res.send({
+    message: 'Hello World! Greeting from Express JS.'
+  })
+})
+
+callback.get('/login-google',
+  passport.authenticate('google', { session: false }),
+  signAfterOAuth
+)
+
+app.use('/callback', callback)
+
+
+//
+// export
+//
 export default app

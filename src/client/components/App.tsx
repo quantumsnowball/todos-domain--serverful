@@ -5,6 +5,9 @@ import { createTheme, styled, ThemeProvider } from '@mui/material'
 import chooseTheme from '../styles/theme'
 import { CenterContent } from './styled/containers'
 import { BrowserRouter } from 'react-router-dom'
+import { CookiesProvider, useCookies } from 'react-cookie'
+import { useDispatch } from 'react-redux'
+import { tokenActions } from '../redux/slices/tokenSlice'
 
 
 const FlexColumnDiv = styled(CenterContent('div'))`
@@ -18,22 +21,33 @@ const FlexColumnDiv = styled(CenterContent('div'))`
 `
 
 function App() {
+  const dispatch = useDispatch()
   const mode = 'light'
   const name = 'elementary'
   const theme = useCallback(() => createTheme(chooseTheme(name)(mode)), [name, mode])
+  const [cookies, _, removeCookie] = useCookies(['refreshToken'])
 
   useEffect(() => {
     document.body.style.backgroundColor = theme().palette.background.default
   }, [theme])
 
+  useEffect(() => {
+    if (cookies.refreshToken) {
+      dispatch(tokenActions.setRefreshToken(cookies.refreshToken))
+      removeCookie('refreshToken')
+    }
+  }, [])
+
   return (
     <ThemeProvider theme={theme}>
-      <BrowserRouter>
-        <FlexColumnDiv className="app-ctn">
-          <MenuBar />
-          <Main />
-        </FlexColumnDiv>
-      </BrowserRouter>
+      <CookiesProvider>
+        <BrowserRouter>
+          <FlexColumnDiv className="app-ctn">
+            <MenuBar />
+            <Main />
+          </FlexColumnDiv>
+        </BrowserRouter>
+      </CookiesProvider>
     </ThemeProvider>
   )
 }

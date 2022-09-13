@@ -8,7 +8,7 @@ dotenv.config()
 const CLIENT_ID = process.env.GOOGLE_OAUTH_CLIENT_ID
 const CLIENT_SECRET = process.env.GOOGLE_OAUTH_CLIENT_SECRET
 // const CALLBACK_URL = 'http://localhost:8888/api/login-google-callback'
-const CALLBACK_URL = 'http://localhost:8888/api/login-google'
+const CALLBACK_URL = 'http://localhost:8888/callback/login-google'
 
 
 export const verifyFunction = new GoogleStrategy(

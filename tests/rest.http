@@ -3,13 +3,18 @@ Content-Type: application/json
 
 { "email": "a@b.c", "password": "w" }
 
+GET http://localhost:8888/api/hello
+GET http://localhost:8888/callback/hello
+
 POST http://localhost:8888/api/login-google
 POST http://localhost:8888/api/login-google-callback
 GET http://localhost:8888/api/login-google
-GET http://localhost:8888/api/login-google-callback2
 POST http://localhost:8888/api/login-google/callback
-POST http://localhost:3333/api/login-google
 
-GET http://localhost:3333
+
+GET http://localhost:8888/callback/login-google
+POST http://localhost:8888/callback/login-google
+
+GET http://localhost:8888
 
 GET https://accounts.google.com/o/oauth2/v2/auth?response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A3333%2Fapi%2Flogin-google%2Fcallback&scope=profile&client_id=65666602924-lkj6o0gk9qjcdfsnt6qnck93s74ujp68.apps.googleusercontent.com

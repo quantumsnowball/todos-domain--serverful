@@ -24,6 +24,9 @@ const config = {
     proxy: {
       '/api': {
         target: `http://localhost:${port_server}`,
+      },
+      '/callback': {
+        target: `http://localhost:${port_server}`,
       }
     }
   },
