@@ -6,6 +6,7 @@ import {
   addNewUserSampleData,
   checkIfUserAlreadyExists,
   registerUserToDatabase,
+  upsertOAuthUserToDatabase,
 } from './middleware/register'
 import {
   checkUserEmailPassword
@@ -92,6 +93,7 @@ api.post('/login',
 
 api.get('/login-google',
   passport.authenticate('google', { session: false }),
+  upsertOAuthUserToDatabase,
   signAfterOAuth
 )
 

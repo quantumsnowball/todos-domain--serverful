@@ -9,16 +9,24 @@ dotenv.config()
 
 const DATABASE = process.env.DATABASE
 const USERS_COLLECTION = process.env.USERS_COLLECTION
+const OAUTH_COLLECTION = process.env.OAUTH_COLLECTION
 const TODOS_COLLECTION = process.env.TODOS_COLLECTION
 
 
 export const checkIfUserAlreadyExists: RequestHandler = async (req, res, next) => {
   const email = req.body.email
-  // check if user already exists
+  // check if user already exists in login
   const userFound = await db.findUser(DATABASE, USERS_COLLECTION, { email })
   if (userFound) {
     return res.status(406).json({
       message: `Email address ${email} has already been taken, please use another email address.`
+    })
+  }
+  // check if user already exists in oauth
+  const oauthFound = await db.findUser(DATABASE, OAUTH_COLLECTION, { email })
+  if (oauthFound) {
+    return res.status(406).json({
+      message: `Email address ${email} has already been registered, please use OAuth to login again.`
     })
   }
   // all checks passed
@@ -42,3 +50,9 @@ export const registerUserToDatabase: RequestHandler = async (req, res) => {
   return res.status(200).json({ message: `User ${email} is registered successfully.` })
 }
 
+export const upsertOAuthUserToDatabase: RequestHandler = async (req, res, next) => {
+  // upsert oauth user
+  const { email } = req.body
+  db.upsertOAuthUser(DATABASE, OAUTH_COLLECTION, { email })
+  next()
+}

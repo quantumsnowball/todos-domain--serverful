@@ -21,6 +21,8 @@ export const verifyFunction = new GoogleStrategy(
   },
   (req, accessToken, refreshToken, profile, cb) => {
     const email = profile.emails[0].value
+    if (!email)
+      return cb(null, false)
     req.body.email = email
     return cb(null, email)
   }

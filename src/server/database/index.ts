@@ -65,6 +65,13 @@ const insertUser = operation(
   }
 )
 
+// upsert oauth user
+const upsertOAuthUser = operation(
+  async (collection: Collection, filter: User) => {
+    await collection.updateOne(filter, { $setOnInsert: filter }, { upsert: true })
+  }
+)
+
 // find user
 const findUser = operation(
   async (collection: Collection, filter: User) => {
@@ -98,6 +105,7 @@ const findTodos = operation(
 export default {
   test,
   insertUser,
+  upsertOAuthUser,
   findUser,
   insertTodo,
   deleteTodo,
