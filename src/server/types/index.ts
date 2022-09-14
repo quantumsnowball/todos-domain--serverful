@@ -10,6 +10,10 @@ export interface UserWithPassword extends User {
   hashedPassword: string
 }
 
+export interface PendingUser extends UserWithPassword {
+  activationToken: string
+}
+
 export interface UserFilter {
   user: string
 }

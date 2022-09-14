@@ -5,8 +5,10 @@ import './middleware/passport'
 import {
   addNewUserSampleData,
   checkIfUserAlreadyExists,
+  registerPendingUser,
   registerUserToDatabase,
   upsertOAuthUserToDatabase,
+  verifyPendingUser,
 } from './middleware/register'
 import {
   checkUserEmailPassword
@@ -82,6 +84,11 @@ api.delete('/todos',
 
 api.post('/register',
   checkIfUserAlreadyExists,
+  registerPendingUser
+)
+
+api.get('/activate',
+  verifyPendingUser,
   addNewUserSampleData,
   registerUserToDatabase
 )

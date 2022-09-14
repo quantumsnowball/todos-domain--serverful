@@ -25,18 +25,28 @@ function App() {
   const mode = 'light'
   const name = 'elementary'
   const theme = useCallback(() => createTheme(chooseTheme(name)(mode)), [name, mode])
-  const [cookies, _, removeCookie] = useCookies(['refreshToken'])
+  const [cookies, _, removeCookie] = useCookies(['refreshToken', 'message'])
 
   useEffect(() => {
     document.body.style.backgroundColor = theme().palette.background.default
   }, [theme])
 
+  // grap if there is a refresh token in cookie
   useEffect(() => {
     if (cookies.refreshToken) {
       dispatch(tokenActions.setRefreshToken(cookies.refreshToken))
       removeCookie('refreshToken')
     }
   }, [])
+
+  // display message if there is a message in cookie
+  useEffect(() => {
+    if (cookies.message) {
+      alert(cookies.message)
+      removeCookie('message')
+    }
+  }, [])
+
 
   return (
     <ThemeProvider theme={theme}>
