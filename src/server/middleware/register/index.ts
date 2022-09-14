@@ -1,9 +1,10 @@
 import { RequestHandler } from 'express'
 import crypto from 'crypto'
 import bcrypt from 'bcrypt'
-import db from '../database'
+import db from '../../database'
 import dotenv from 'dotenv'
-import { PendingUser, User, UserWithPassword } from '../types'
+import { PendingUser, UserWithPassword } from '../../types'
+import { sendActivationEmail } from './mailer'
 
 
 dotenv.config()
@@ -43,7 +44,7 @@ export const registerPendingUser: RequestHandler = async (req, res) => {
   // generate activation token
   const activationToken = crypto.randomBytes(64).toString('hex')
   // send activation email
-  console.log(`http://localhost:8888/api/activate?email=${email}&activationToken=${activationToken}`) // TODO
+  await sendActivationEmail(email, activationToken)
   // add user as pending
   await db.upsertPendingUser(DATABASE, PENDING_COLLECTION, { email, hashedPassword, activationToken })
   // redirect to login

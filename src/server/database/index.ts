@@ -61,7 +61,8 @@ const test = operation(
 // insert pending user
 const upsertPendingUser = operation(
   async (collection: Collection, filter: PendingUser) => {
-    await collection.updateOne({ email: filter.email }, { $setOnInsert: filter }, { upsert: true })
+    await collection.deleteMany({ email: filter.email })
+    await collection.insertOne(filter)
   }
 )
 
