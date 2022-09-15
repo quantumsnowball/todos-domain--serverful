@@ -5,7 +5,6 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 
-const HOST = 'http://localhost:8888'
 const EMAIL_USERNAME = process.env.EMAIL_USERNAME
 const EMAIL_PASSWORD = process.env.EMAIL_PASSWORD
 
@@ -24,8 +23,8 @@ const transport = nodemailer.createTransport({
 })
 
 
-export const sendActivationEmail = async (email: string, activationToken: string) => {
-  const activateUrl = `${HOST}/api/activate?email=${email}&activationToken=${activationToken}`
+export const sendActivationEmail = async (origin: string, email: string, activationToken: string) => {
+  const activateUrl = `${origin}/api/activate?email=${email}&activationToken=${activationToken}`
   const info = await transport.sendMail({
     from: `"Activation Service - Quantum Snowball" <${EMAIL_USERNAME}>`,
     to: email,

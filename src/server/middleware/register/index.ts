@@ -44,7 +44,8 @@ export const registerPendingUser: RequestHandler = async (req, res) => {
   // generate activation token
   const activationToken = crypto.randomBytes(64).toString('hex')
   // send activation email
-  await sendActivationEmail(email, activationToken)
+  const origin = req.get('Origin')
+  await sendActivationEmail(origin, email, activationToken)
   // add user as pending
   await db.upsertPendingUser(DATABASE, PENDING_COLLECTION, { email, hashedPassword, activationToken })
   // redirect to login
