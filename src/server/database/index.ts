@@ -2,7 +2,7 @@ import crypto from 'crypto'
 import dotenv from 'dotenv'
 import { MongoClient, Collection, ObjectId } from 'mongodb'
 import { _Id } from '../../types'
-import { MongoOperation, TodoDocument, User, UserFilter, UserWithPassword } from '../types'
+import { MongoOperation, PendingUser, TodoDocument, User, UserFilter, UserWithPassword } from '../types'
 
 
 // env
@@ -58,10 +58,39 @@ const test = operation(
   }
 )
 
+// insert pending user
+const upsertPendingUser = operation(
+  async (collection: Collection, filter: PendingUser) => {
+    await collection.deleteMany({ email: filter.email })
+    await collection.insertOne(filter)
+  }
+)
+
+// find pending user
+const findPendingUser = operation(
+  async (collection: Collection, filter: User) => {
+    return await collection.findOne<PendingUser>(filter)
+  }
+)
+
+// delete pending users
+const deletePendingUsers = operation(
+  async (collection: Collection, filter: User) => {
+    return await collection.deleteMany(filter)
+  }
+)
+
 // insert user
 const insertUser = operation(
   async (collection: Collection, filter: UserWithPassword) => {
     await collection.insertOne(filter)
+  }
+)
+
+// upsert oauth user
+const upsertOAuthUser = operation(
+  async (collection: Collection, filter: User) => {
+    await collection.updateOne(filter, { $setOnInsert: filter }, { upsert: true })
   }
 )
 
@@ -97,7 +126,11 @@ const findTodos = operation(
 
 export default {
   test,
+  upsertPendingUser,
+  findPendingUser,
+  deletePendingUsers,
   insertUser,
+  upsertOAuthUser,
   findUser,
   insertTodo,
   deleteTodo,
