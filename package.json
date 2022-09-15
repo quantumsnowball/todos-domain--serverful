@@ -4,13 +4,13 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "client": "webpack-dev-server --mode development --history-api-fallback --devtool inline-source-map --hot",
-    "server": "nodemon src/server/index.ts",
+    "client": "NODE_ENV=development webpack-dev-server --mode development --history-api-fallback --devtool inline-source-map --hot",
+    "server": "NODE_ENV=development nodemon src/server/index.ts",
     "dev": "concurrently \"yarn server\" \"yarn client\"",
     "dev:docker": "./docker/dev-up.sh; ./docker/dev-down.sh",
     "dev:docker:mongo": "docker exec -it dev-mongo mongo",
-    "build": "webpack --mode production",
-    "prod": "yarn build && ts-node --transpile-only src/server/index.ts"
+    "build": "NODE_ENV=production webpack --mode production",
+    "prod": "yarn build && NODE_ENV=production ts-node --transpile-only src/server/index.ts"
   },
   "devDependencies": {
     "@webpack-cli/generators": "^2.5.0",

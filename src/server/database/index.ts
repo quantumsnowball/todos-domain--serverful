@@ -7,11 +7,9 @@ import { MongoOperation, PendingUser, TodoDocument, User, UserFilter, UserWithPa
 
 // env
 dotenv.config()
-const host_mongo = process.env.HOST_MONGO
-const port_mongo = process.env.PORT_MONGO
-
-// globals
-const URL_MONGO = `mongodb://${host_mongo}:${port_mongo}`
+console.log({ NODE_ENV: process.env.NODE_ENV })
+const URL_MONGO = process.env.NODE_ENV === 'production' ?
+  process.env.URL_MONGO_PROD : process.env.URL_MONGO_DEV
 
 // operation decorator
 const operation = <R, P>(func: MongoOperation<R, P>) =>
